@@ -1,15 +1,13 @@
 package com.example.marketboro.service;
 
-import com.example.marketboro.dto.request.UserRequestDto;
 import com.example.marketboro.dto.request.UserRequestDto.JoinRequestDto;
 import com.example.marketboro.dto.request.UserRequestDto.LoginRequestDto;
-import com.example.marketboro.dto.response.UserResponseDto;
 import com.example.marketboro.dto.response.UserResponseDto.LoginResponseDto;
 import com.example.marketboro.entity.User;
+import com.example.marketboro.entity.UserRoleEnum;
 import com.example.marketboro.repository.UserRepository;
 import com.example.marketboro.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +54,7 @@ public class UserService {
                 .password(bcryptpassword)
                 .name(requestDto.getName())
                 .nickname(nickname)
+                .role(UserRoleEnum.USER)
                 .build();
 
         userRepository.save(user);

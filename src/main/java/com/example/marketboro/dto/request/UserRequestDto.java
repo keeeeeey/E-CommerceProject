@@ -1,5 +1,6 @@
 package com.example.marketboro.dto.request;
 
+import com.example.marketboro.entity.UserRoleEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
