@@ -1,0 +1,20 @@
+spring:
+  profiles:
+    include:
+      - db
+      - secret
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        #       format_sql: true
+        default_batch_fetch_size: 1000
+    open-in-view: false
+
+#logging.level:
+#  org.hibernate.SQL: debug
+
+server:
+  port: 8081
