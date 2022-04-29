@@ -1,5 +1,6 @@
 package com.example.marketboro.entity;
 
+import com.example.marketboro.dto.request.ProductRequestDto.UpdateProduct;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,6 +41,14 @@ public class Product extends Timestamped {
         this.productprice = productprice;
         this.leftproduct = leftproduct;
         this.productEnum = productEnum;
+    }
+
+    public void updateProduct(UpdateProduct requestDto) {
+        this.productname = requestDto.getProductname();
+        this.productinfo = requestDto.getProductinfo();
+        this.productprice = requestDto.getProductprice();
+        this.leftproduct = requestDto.getLeftproduct();
+        this.productEnum = ProductEnum.valueOf(requestDto.getProductEnum());
     }
 
 }

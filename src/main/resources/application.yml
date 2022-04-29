@@ -6,15 +6,15 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
-        #       format_sql: true
+        format_sql: true
         default_batch_fetch_size: 1000
     open-in-view: false
 
-#logging.level:
-#  org.hibernate.SQL: debug
+logging.level:
+  org.hibernate.SQL: debug
 
 server:
   port: 8081
