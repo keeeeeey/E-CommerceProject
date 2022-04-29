@@ -3,8 +3,10 @@ package com.example.marketboro.service;
 import com.example.marketboro.dto.request.UserRequestDto.JoinRequestDto;
 import com.example.marketboro.dto.request.UserRequestDto.LoginRequestDto;
 import com.example.marketboro.dto.response.UserResponseDto.LoginResponseDto;
+import com.example.marketboro.entity.Cart;
 import com.example.marketboro.entity.User;
 import com.example.marketboro.entity.UserRoleEnum;
+import com.example.marketboro.repository.CartRepository;
 import com.example.marketboro.repository.UserRepository;
 import com.example.marketboro.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final CartRepository cartRepository;
 
     //회원가입 확인
     @Transactional
@@ -58,6 +61,13 @@ public class UserService {
                 .build();
 
         userRepository.save(user);
+
+        Cart cart = Cart.builder()
+                .user(user)
+                .build();
+
+        cartRepository.save(cart);
+
         return user.getId();
     }
 
