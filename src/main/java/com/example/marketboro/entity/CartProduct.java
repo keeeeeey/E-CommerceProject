@@ -1,5 +1,7 @@
 package com.example.marketboro.entity;
 
+import com.example.marketboro.dto.request.CartRequestDto;
+import com.example.marketboro.dto.request.CartRequestDto.AddOrUpdateCartDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,5 +36,9 @@ public class CartProduct extends Timestamped {
         this.product = product;
         this.productcount = productcount;
     }
+
+    public void updateCartProduct(AddOrUpdateCartDto requestDto) {
+        this.productcount = requestDto.getProductcount();
+    };
 
 }
