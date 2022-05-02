@@ -3,7 +3,7 @@ package com.example.marketboro.service;
 import com.example.marketboro.dto.request.CartRequestDto.AddCartDto;
 import com.example.marketboro.dto.request.CartRequestDto.DeleteCartDto;
 import com.example.marketboro.dto.request.CartRequestDto.UpdateCartDto;
-import com.example.marketboro.dto.request.CommonDto.CartProductIdDto;
+import com.example.marketboro.dto.request.CommonDto.IdDto;
 import com.example.marketboro.entity.Cart;
 import com.example.marketboro.entity.CartProduct;
 import com.example.marketboro.entity.Product;
@@ -55,16 +55,16 @@ public class CartService {
 
     @Transactional
     public void deleteCart(DeleteCartDto requestDto) {
-        List<CartProductIdDto> cartProductIdDtoList = requestDto.getCartProductIdDtoList();
+        List<IdDto> cartProductIdDtoList = requestDto.getCartProductIdDtoList();
         cartProductIdDtoList.forEach((cartProductIdDto) -> {
-            cartProductRepository.deleteById(cartProductIdDto.getCartProductId());
+            cartProductRepository.deleteById(cartProductIdDto.getId());
         });
 
     }
 
     private void productCountValidation(Product product, int productcount) {
         if (product.getProductEnum().equals(ProductEnum.SOLDOUT)) {
-            throw new RuntimeException("상품의 재고가 없습니다.");
+            throw new RuntimeException("상품이 품절되었습니다.");
         }
 
         if (productcount > product.getLeftproduct()) {

@@ -7,11 +7,23 @@ public class CommonDto {
 
     @Getter
     @NoArgsConstructor
-    public static class CartProductIdDto {
-        private Long cartProductId;
+    public static class IdDto {
+        private Long id;
 
-        public CartProductIdDto(final Long cartProductId) {
-            this.cartProductId = cartProductId;
+        public IdDto(final Long id) {
+            this.id = id;
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor
+    public static class OrderDto {
+        private Long productId;
+        private int productcount;
+
+        public OrderDto(final Long productId, final int productcount) {
+            this.productId = productId;
+            this.productcount = productcount;
         }
     }
 }

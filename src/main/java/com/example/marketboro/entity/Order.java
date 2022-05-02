@@ -22,12 +22,8 @@ public class Order extends Timestamped {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
-
     @Builder
-    public Order (final User user, final OrderStatus orderStatus) {
+    public Order (final User user) {
         this.user = user;
-        this.orderStatus = orderStatus;
     }
 }

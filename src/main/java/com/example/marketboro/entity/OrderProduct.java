@@ -28,11 +28,20 @@ public class OrderProduct {
     @Column(nullable = false)
     private int productcount;
 
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+
     @Builder
-    public OrderProduct(final Order order, final Product product, final int productcount) {
+    public OrderProduct(final Order order, final Product product, final int productcount,
+                        final OrderStatus orderStatus) {
         this.order = order;
         this.product = product;
         this.productcount = productcount;
+        this.orderStatus = orderStatus;
+    }
+
+    public void changeOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
 }

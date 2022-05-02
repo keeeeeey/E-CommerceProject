@@ -51,4 +51,12 @@ public class Product extends Timestamped {
         this.productEnum = ProductEnum.valueOf(requestDto.getProductEnum());
     }
 
+    public void plusLeftProduct(int plusLeftproduct) {
+        this.leftproduct += plusLeftproduct;
+    }
+
+    public void minusLeftProduct(int minusLeftproduct) {
+        this.leftproduct -= minusLeftproduct;
+    }
+
 }
