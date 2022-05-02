@@ -8,6 +8,8 @@ import com.example.marketboro.entity.Cart;
 import com.example.marketboro.entity.CartProduct;
 import com.example.marketboro.entity.Product;
 import com.example.marketboro.entity.ProductEnum;
+import com.example.marketboro.exception.ErrorCode;
+import com.example.marketboro.exception.ErrorCustomException;
 import com.example.marketboro.repository.CartProductRepository;
 import com.example.marketboro.repository.CartRepository;
 import com.example.marketboro.repository.ProductRepository;
@@ -29,7 +31,7 @@ public class CartService {
     public Long addCart(Long userId, AddCartDto requestDto) {
         Cart cart = cartRepository.findByUserId(userId);
         Product product = productRepository.findById(requestDto.getProductId())
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 상품입니다."));
+                .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_EXISTENCE_ERROR));
 
         productCountValidation(product, requestDto.getProductcount());
 
@@ -45,7 +47,7 @@ public class CartService {
     @Transactional
     public Long updateCart(UpdateCartDto requestDto) {
         CartProduct cartProduct = cartProductRepository.findById(requestDto.getCartProductId())
-                .orElseThrow(() -> new RuntimeException("해당 상품이 장바구니에 존재하지 않습니다."));
+                .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_EXISTENCECART_ERROR));
 
         productCountValidation(cartProduct.getProduct(), requestDto.getProductcount());
 
@@ -64,11 +66,11 @@ public class CartService {
 
     private void productCountValidation(Product product, int productcount) {
         if (product.getProductEnum().equals(ProductEnum.SOLDOUT)) {
-            throw new RuntimeException("상품이 품절되었습니다.");
+            throw new ErrorCustomException(ErrorCode.SOLD_OUT_ERROR);
         }
 
         if (productcount > product.getLeftproduct()) {
-            throw new RuntimeException("재고가 부족합니다.");
+            throw new ErrorCustomException(ErrorCode.SHORTAGE_PRODUCT_ERROR);
         }
     }
 

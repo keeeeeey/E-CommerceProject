@@ -4,6 +4,8 @@ import com.example.marketboro.dto.Success;
 import com.example.marketboro.dto.request.ProductRequestDto.CreateProduct;
 import com.example.marketboro.dto.request.ProductRequestDto.UpdateProduct;
 import com.example.marketboro.entity.UserRoleEnum;
+import com.example.marketboro.exception.ErrorCode;
+import com.example.marketboro.exception.ErrorCustomException;
 import com.example.marketboro.security.UserDetailsImpl;
 import com.example.marketboro.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +29,7 @@ public class ProductController {
             return new ResponseEntity<>(new Success("상품 등록",
                     productService.createProduct(requestDto)), HttpStatus.OK);
         }
-        throw new RuntimeException("로그인 후 이용 가능합니다.");
+        throw new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR);
     }
 
     @Secured(UserRoleEnum.Authority.ADMIN)
@@ -39,7 +41,7 @@ public class ProductController {
             return new ResponseEntity<>(new Success("상품 정보 수정",
                     productService.updateProduct(requestDto, productId)), HttpStatus.OK);
         }
-        throw new RuntimeException("로그인 후 이용 가능합니다.");
+        throw new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR);
     }
 
     @Secured(UserRoleEnum.Authority.ADMIN)
@@ -50,6 +52,6 @@ public class ProductController {
             productService.deleteProduct(productId);
             return new ResponseEntity<>(new Success("상품 삭제", ""), HttpStatus.OK);
         }
-        throw new RuntimeException("로그인 후 이용 가능합니다.");
+        throw new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR);
     }
 }

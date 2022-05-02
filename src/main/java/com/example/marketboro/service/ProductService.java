@@ -4,6 +4,8 @@ import com.example.marketboro.dto.request.ProductRequestDto.CreateProduct;
 import com.example.marketboro.dto.request.ProductRequestDto.UpdateProduct;
 import com.example.marketboro.entity.Product;
 import com.example.marketboro.entity.ProductEnum;
+import com.example.marketboro.exception.ErrorCode;
+import com.example.marketboro.exception.ErrorCustomException;
 import com.example.marketboro.repository.CartProductRepository;
 import com.example.marketboro.repository.OrderProductRepository;
 import com.example.marketboro.repository.ProductRepository;
@@ -35,7 +37,7 @@ public class ProductService {
     @Transactional
     public Long updateProduct(UpdateProduct requestDto, Long productId) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 상품입니다."));
+                .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_EXISTENCE_ERROR));
         product.updateProduct(requestDto);
         return product.getId();
     }

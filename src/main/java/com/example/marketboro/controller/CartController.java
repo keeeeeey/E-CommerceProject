@@ -4,6 +4,8 @@ import com.example.marketboro.dto.Success;
 import com.example.marketboro.dto.request.CartRequestDto.AddCartDto;
 import com.example.marketboro.dto.request.CartRequestDto.DeleteCartDto;
 import com.example.marketboro.dto.request.CartRequestDto.UpdateCartDto;
+import com.example.marketboro.exception.ErrorCode;
+import com.example.marketboro.exception.ErrorCustomException;
 import com.example.marketboro.security.UserDetailsImpl;
 import com.example.marketboro.service.CartService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +27,7 @@ public class CartController {
             return new ResponseEntity<>(new Success("장바구니 담기",
                     cartService.addCart(userDetails.getUser().getId(), requestDto)), HttpStatus.OK);
         }
-        throw new RuntimeException("로그인 후 이용 가능합니다.");
+        throw new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR);
     }
 
     @PatchMapping("/api/cart")
@@ -35,7 +37,7 @@ public class CartController {
             return new ResponseEntity<>(new Success("장바구니 수정",
                     cartService.updateCart(requestDto)), HttpStatus.OK);
         }
-        throw new RuntimeException("로그인 후 이용 가능합니다.");
+        throw new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR);
     }
 
     @DeleteMapping("/api/cart")
@@ -45,6 +47,6 @@ public class CartController {
             cartService.deleteCart(requestDto);
             return new ResponseEntity<>(new Success("장바구니 삭제", ""), HttpStatus.OK);
         }
-        throw new RuntimeException("로그인 후 이용 가능합니다.");
+        throw new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR);
     }
 }

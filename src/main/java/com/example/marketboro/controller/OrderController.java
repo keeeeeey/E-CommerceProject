@@ -3,6 +3,8 @@ package com.example.marketboro.controller;
 import com.example.marketboro.dto.Success;
 import com.example.marketboro.dto.request.OrderRequestDto.CancelOrderDto;
 import com.example.marketboro.dto.request.OrderRequestDto.CreateOrderDto;
+import com.example.marketboro.exception.ErrorCode;
+import com.example.marketboro.exception.ErrorCustomException;
 import com.example.marketboro.security.UserDetailsImpl;
 import com.example.marketboro.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +26,7 @@ public class OrderController {
             return new ResponseEntity<>(new Success("상품 주문 접수",
                     orderService.createOrder(userDetails.getUser().getId(), requestDto)), HttpStatus.OK);
         }
-        throw new RuntimeException("로그인 후 이용 가능합니다.");
+        throw new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR);
     }
 
     @PatchMapping("/api/order")
@@ -34,7 +36,7 @@ public class OrderController {
             return new ResponseEntity<>(new Success("상품 주문 취소",
                     orderService.cancelOrder(requestDto)), HttpStatus.OK);
         }
-        throw new RuntimeException("로그인 후 이용 가능합니다.");
+        throw new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR);
     }
 
     @PatchMapping("/api/order/{orderProductId}")
@@ -44,6 +46,6 @@ public class OrderController {
             return new ResponseEntity<>(new Success("상품 배송 완료",
                     orderService.finishDelivery(orderProductId)), HttpStatus.OK);
         }
-        throw new RuntimeException("로그인 후 이용 가능합니다.");
+        throw new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR);
     }
 }

@@ -6,6 +6,8 @@ import com.example.marketboro.dto.response.UserResponseDto.LoginResponseDto;
 import com.example.marketboro.entity.Cart;
 import com.example.marketboro.entity.User;
 import com.example.marketboro.entity.UserRoleEnum;
+import com.example.marketboro.exception.ErrorCode;
+import com.example.marketboro.exception.ErrorCustomException;
 import com.example.marketboro.repository.CartRepository;
 import com.example.marketboro.repository.UserRepository;
 import com.example.marketboro.security.JwtTokenProvider;
@@ -33,21 +35,21 @@ public class UserService {
         Optional<User> findUser = userRepository.findByUsername(username);
 
         if (findUser.isPresent()) {
-            throw new RuntimeException("이미 사용중인 아이디입니다.");
+            throw new ErrorCustomException(ErrorCode.ALREADY_USERNAME_ERROR);
         }
 
         String password = requestDto.getPassword();
         String passwordCheck = requestDto.getPasswordcheck();
 
         if (!password.equals(passwordCheck)) {
-            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+            throw new ErrorCustomException(ErrorCode.NO_MATCH_PASSWORD_ERROR);
         }
 
         String nickname = requestDto.getNickname();
         Optional<User> findUserByNickname = userRepository.findByNickname(nickname);
 
         if (findUserByNickname.isPresent()) {
-            throw new RuntimeException("이미 사용중인 닉네임입니다.");
+            throw new ErrorCustomException(ErrorCode.ALREADY_NICKNAME_ERROR);
         }
 
         // 패스워드 암호화
@@ -76,10 +78,10 @@ public class UserService {
     @Transactional
     public LoginResponseDto login(LoginRequestDto requestDto) {
         User user = userRepository.findByUsername(requestDto.getUsername())
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 아이디입니다."));
+                .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_USER_ERROR));
 
         if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
-            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+            throw new ErrorCustomException(ErrorCode.NO_MATCH_PASSWORD_ERROR);
         }
 
         String accesstoken = jwtTokenProvider.createToken(user.getUsername());

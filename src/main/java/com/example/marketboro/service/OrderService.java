@@ -5,6 +5,8 @@ import com.example.marketboro.dto.request.CommonDto.OrderDto;
 import com.example.marketboro.dto.request.OrderRequestDto.CancelOrderDto;
 import com.example.marketboro.dto.request.OrderRequestDto.CreateOrderDto;
 import com.example.marketboro.entity.*;
+import com.example.marketboro.exception.ErrorCode;
+import com.example.marketboro.exception.ErrorCustomException;
 import com.example.marketboro.repository.OrderProductRepository;
 import com.example.marketboro.repository.OrderRepository;
 import com.example.marketboro.repository.ProductRepository;
@@ -30,7 +32,7 @@ public class OrderService {
     @Transactional
     public List<Long> createOrder(Long userId, CreateOrderDto requestDto) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 사용자입니다."));
+                .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_USER_ERROR));
         Order order = Order.builder()
                 .user(user)
                 .build();
@@ -39,10 +41,10 @@ public class OrderService {
         List<Long> orderProductIdList = new ArrayList<>();
         orderDtoList.forEach((orderDto) -> {
             Product product = productRepository.findById(orderDto.getProductId())
-                    .orElseThrow(() -> new RuntimeException("존재하지 않는 상품입니다."));
+                    .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_EXISTENCE_ERROR));
 
             if (product.getLeftproduct() < orderDto.getProductcount()) {
-                throw new RuntimeException("재고가 부족합니다.");
+                throw new ErrorCustomException(ErrorCode.SHORTAGE_PRODUCT_ERROR);
             }
 
             OrderProduct orderProduct = OrderProduct.builder()
@@ -68,12 +70,12 @@ public class OrderService {
         List<IdDto> cancelOrderList = requestDto.getCancelOrderList();
         cancelOrderList.forEach((cancelOrder) -> {
             OrderProduct orderProduct = orderProductRepository.findById(cancelOrder.getId())
-                    .orElseThrow(() -> new RuntimeException("이미 취소된 주문입니다."));
+                    .orElseThrow(() -> new ErrorCustomException(ErrorCode.ALREADY_CANCELORDER_ERROR));
 
             if (orderProduct.getOrderStatus().equals(OrderStatus.배송완료)) {
-                throw new RuntimeException("이미 배송이 완료된 상품입니다. 주문을 취소할 수 없습니다.");
+                throw new ErrorCustomException(ErrorCode.ALREADY_DELIVERED_ERROR);
             } else if (orderProduct.getOrderStatus().equals(OrderStatus.주문취소)) {
-                throw new RuntimeException("이미 취소된 상품입니다. 주문을 취소할 수 없습니다.");
+                throw new ErrorCustomException(ErrorCode.ALREADY_CANCELORDER_ERROR);
             }
 
             orderProduct.changeOrderStatus(OrderStatus.주문취소);
@@ -88,7 +90,7 @@ public class OrderService {
     @Transactional
     public Long finishDelivery(Long orderProductId) {
         OrderProduct orderProduct = orderProductRepository.findById(orderProductId)
-                .orElseThrow(() -> new RuntimeException("주문하신 상품이 아닙니다."));
+                .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_ORDERED_ERROR));
         orderProduct.changeOrderStatus(OrderStatus.배송완료);
         log.info(orderProduct.getId() + "번 주문 배송 완료");
         return orderProduct.getId();
