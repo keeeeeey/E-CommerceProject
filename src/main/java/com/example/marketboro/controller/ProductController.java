@@ -15,6 +15,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 public class ProductController {
@@ -24,7 +26,7 @@ public class ProductController {
     @Secured(UserRoleEnum.Authority.ADMIN)
     @PostMapping("/api/product")
     public ResponseEntity<Success> createProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                 @RequestBody CreateProduct requestDto) {
+                                                 @Valid @RequestBody CreateProduct requestDto) {
         if (userDetails != null) {
             return new ResponseEntity<>(new Success("상품 등록",
                     productService.createProduct(requestDto)), HttpStatus.OK);
@@ -35,7 +37,7 @@ public class ProductController {
     @Secured(UserRoleEnum.Authority.ADMIN)
     @PatchMapping("/api/product/{productId}")
     public ResponseEntity<Success> updateProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                 @RequestBody UpdateProduct requestDto,
+                                                 @Valid @RequestBody UpdateProduct requestDto,
                                                  @PathVariable Long productId) {
         if (userDetails != null) {
             return new ResponseEntity<>(new Success("상품 정보 수정",

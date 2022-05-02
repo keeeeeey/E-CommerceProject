@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -21,13 +23,13 @@ public class UserController {
     private final RefreshService refreshService;
 
     @PostMapping("/user/join")
-    public ResponseEntity<Success> join(@RequestBody JoinRequestDto requestDto) {
+    public ResponseEntity<Success> join(@Valid @RequestBody JoinRequestDto requestDto) {
         return new ResponseEntity<>(new Success("회원가입",
                 userService.join(requestDto)), HttpStatus.OK);
     }
 
     @PostMapping("/user/login")
-    public ResponseEntity<Success> login(@RequestBody LoginRequestDto requestDto) {
+    public ResponseEntity<Success> login(@Valid @RequestBody LoginRequestDto requestDto) {
         return new ResponseEntity<>(new Success("로그인",
                 userService.login(requestDto)), HttpStatus.OK);
     }

@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class RestApiExceptionHandler {
 
-    @ExceptionHandler(value = {ErrorCustomException.class,})
+    @ExceptionHandler(ErrorCustomException.class)
     public ResponseEntity<Fail> customErrorException(ErrorCustomException ex) {
         Fail apiException = new Fail(ex.getErrorCode());
         log.error("에러발생 :" + ex.getErrorCode());
         return new ResponseEntity<>(apiException, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(value = {MethodArgumentNotValidException.class})
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Fail> handleApiRequestErrorException(MethodArgumentNotValidException ex) {
-        Fail restApiException = new Fail(ex + " " + ex.getLocalizedMessage() );
+        Fail restApiException = new Fail(ex.getBindingResult().getAllErrors().get(0).getDefaultMessage());
         log.error(ex.getMessage());
         return new ResponseEntity<>(restApiException, HttpStatus.BAD_REQUEST);
     }
