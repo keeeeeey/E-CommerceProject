@@ -92,15 +92,14 @@ public class KakaoService {
         String responseBody = response.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
-        Long id = jsonNode.get("id").asLong();
         String nickname = jsonNode.get("properties")
                 .get("nickname").asText();
         String email = jsonNode.get("kakao_account")
                 .get("email").asText();
         String password = UUID.randomUUID().toString();
 
-        System.out.println("카카오 사용자 정보: " + id + ", " + nickname + ", " + email);
-        return new KakaoUserInfoDto(id, nickname, email, password);
+        System.out.println("카카오 사용자 정보: " + nickname + ", " + email);
+        return new KakaoUserInfoDto(nickname, email, password);
     }
 
     private LoginResponseDto registerKakaoUserIfNeeded(KakaoUserInfoDto kakaoUserInfo) {

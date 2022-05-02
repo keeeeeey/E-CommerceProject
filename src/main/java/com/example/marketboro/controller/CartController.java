@@ -49,4 +49,13 @@ public class CartController {
         }
         throw new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR);
     }
+
+    @GetMapping("/api/cart")
+    public ResponseEntity<Success> getAllCartProduct(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (userDetails != null) {
+            return new ResponseEntity<>(new Success("장바구니 조회",
+                    cartService.getAllCartProduct(userDetails.getUser().getId())), HttpStatus.OK);
+        }
+        throw new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR);
+    }
 }

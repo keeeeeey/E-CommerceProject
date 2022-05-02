@@ -56,4 +56,16 @@ public class ProductController {
         }
         throw new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR);
     }
+
+    @GetMapping("/api/product")
+    public ResponseEntity<Success> getAllProduct() {
+        return new ResponseEntity<>(new Success("전체 상품 조회",
+                productService.getAllProduct()), HttpStatus.OK);
+    }
+
+    @GetMapping("/api/product/{productId}")
+    public ResponseEntity<Success> getProduct(@PathVariable Long productId) {
+        return new ResponseEntity<>(new Success("단일 상품 조회",
+                productService.getProduct(productId)), HttpStatus.OK);
+    }
 }

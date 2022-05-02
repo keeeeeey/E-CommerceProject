@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -47,5 +49,18 @@ public class ProductService {
 //        cartProductRepository.deleteByProductId(productId);
 //        orderProductRepository.deleteByProductId(productId);
         productRepository.deleteById(productId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Product> getAllProduct() {
+        List<Product> productList = productRepository.findAll();
+        return productList;
+    }
+
+    @Transactional(readOnly = true)
+    public Product getProduct(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_EXISTENCE_ERROR));
+        return product;
     }
 }

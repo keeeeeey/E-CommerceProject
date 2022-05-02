@@ -96,4 +96,17 @@ public class OrderService {
         return orderProduct.getId();
     }
 
+    @Transactional(readOnly = true)
+    public List<OrderProduct> getAllOrder(Long userId) {
+        List<Order> orderList = orderRepository.findAllByUserId(userId);
+        List<OrderProduct> orderProductList = new ArrayList<>();
+        orderList.forEach((order) -> {
+            List<OrderProduct> findOrderProductList = orderProductRepository.findAllByOrderId(order.getId());
+            findOrderProductList.forEach((findOrderProduct) -> {
+                orderProductList.add(findOrderProduct);
+            });
+        });
+        return orderProductList;
+    }
+
 }

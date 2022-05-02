@@ -48,4 +48,13 @@ public class OrderController {
         }
         throw new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR);
     }
+
+    @GetMapping("/api/order")
+    public ResponseEntity<Success> getAllOrder(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (userDetails != null) {
+            return new ResponseEntity<>(new Success("전체 주문 조회",
+                    orderService.getAllOrder(userDetails.getUser().getId())), HttpStatus.OK);
+        }
+        throw new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR);
+    }
 }

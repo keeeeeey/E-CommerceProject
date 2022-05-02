@@ -29,7 +29,8 @@ public class CartService {
 
     @Transactional
     public Long addCart(Long userId, AddCartDto requestDto) {
-        Cart cart = cartRepository.findByUserId(userId);
+        Cart cart = cartRepository.findByUserId(userId)
+                .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR));
         Product product = productRepository.findById(requestDto.getProductId())
                 .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_EXISTENCE_ERROR));
 
@@ -62,6 +63,14 @@ public class CartService {
             cartProductRepository.deleteById(cartProductIdDto.getId());
         });
 
+    }
+
+    @Transactional(readOnly = true)
+    public List<CartProduct> getAllCartProduct(Long userId) {
+        Cart cart = cartRepository.findByUserId(userId)
+                .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR));
+        List<CartProduct> cartProductList = cartProductRepository.findAllByCartId(cart.getId());
+        return cartProductList;
     }
 
     private void productCountValidation(Product product, int productcount) {
