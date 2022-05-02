@@ -1,9 +1,9 @@
 package com.example.marketboro.controller;
 
 import com.example.marketboro.dto.Success;
-import com.example.marketboro.dto.request.CartRequestDto;
-import com.example.marketboro.dto.request.CartRequestDto.AddOrUpdateCartDto;
+import com.example.marketboro.dto.request.CartRequestDto.AddCartDto;
 import com.example.marketboro.dto.request.CartRequestDto.DeleteCartDto;
+import com.example.marketboro.dto.request.CartRequestDto.UpdateCartDto;
 import com.example.marketboro.security.UserDetailsImpl;
 import com.example.marketboro.service.CartService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class CartController {
 
     @PostMapping("/api/cart")
     public ResponseEntity<Success> addCart(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                           @RequestBody AddOrUpdateCartDto requestDto) {
+                                           @RequestBody AddCartDto requestDto) {
         if (userDetails != null) {
             return new ResponseEntity<>(new Success("장바구니 담기",
                     cartService.addCart(userDetails.getUser().getId(), requestDto)), HttpStatus.OK);
@@ -30,10 +30,10 @@ public class CartController {
 
     @PatchMapping("/api/cart")
     public ResponseEntity<Success> updateCart(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                              @RequestBody AddOrUpdateCartDto requestDto) {
+                                              @RequestBody UpdateCartDto requestDto) {
         if (userDetails != null) {
             return new ResponseEntity<>(new Success("장바구니 수정",
-                    cartService.updateCart(userDetails.getUser().getId(), requestDto)), HttpStatus.OK);
+                    cartService.updateCart(requestDto)), HttpStatus.OK);
         }
         throw new RuntimeException("로그인 후 이용 가능합니다.");
     }
@@ -42,8 +42,8 @@ public class CartController {
     public ResponseEntity<Success> deleteCart(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                               @RequestBody DeleteCartDto requestDto) {
         if (userDetails != null) {
-            cartService.deleteCart(userDetails.getUser().getId(), requestDto);
-            return new ResponseEntity<>(new Success("장바구니 수정", ""), HttpStatus.OK);
+            cartService.deleteCart(requestDto);
+            return new ResponseEntity<>(new Success("장바구니 삭제", ""), HttpStatus.OK);
         }
         throw new RuntimeException("로그인 후 이용 가능합니다.");
     }
