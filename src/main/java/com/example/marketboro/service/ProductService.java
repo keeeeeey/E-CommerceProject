@@ -42,7 +42,7 @@ public class ProductService {
 
     @Transactional
     public void deleteProduct(Long productId) {
-        cartProductRepository.deleteByProductId(productId);
+//        cartProductRepository.deleteByProductId(productId);
 //        orderProductRepository.deleteByProductId(productId);
         productRepository.deleteById(productId);
     }

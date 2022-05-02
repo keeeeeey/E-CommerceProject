@@ -23,6 +23,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final CartRepository cartRepository;
+    private final RedisService redisService;
 
     //회원가입 확인
     @Transactional
@@ -82,12 +83,15 @@ public class UserService {
         }
 
         String accesstoken = jwtTokenProvider.createToken(user.getUsername());
+        String refreshtoken = jwtTokenProvider.createRefreshToken(user.getUsername());
+        redisService.setValues(refreshtoken, user.getUsername());
 
         return LoginResponseDto.builder()
                 .username(user.getUsername())
                 .name(user.getName())
                 .nickname(user.getNickname())
                 .accesstoken(accesstoken)
+                .refreshtoken(refreshtoken)
                 .build();
     }
 }

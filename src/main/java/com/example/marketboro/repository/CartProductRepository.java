@@ -4,9 +4,4 @@ import com.example.marketboro.entity.CartProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CartProductRepository extends JpaRepository<CartProduct, Long> {
-    void deleteByProductId(Long productId);
-
-    CartProduct findByCartIdAndProductId(Long id, Long productId);
-
-    void deleteByCartIdAndProductId(Long id, Long productId);
 }
