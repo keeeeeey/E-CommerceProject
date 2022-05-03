@@ -11,3 +11,36 @@
 ### 다대다 연관관계 매핑의 경우 예상치 못한 쿼리가 나갈수 있어 중간 테이블을 생성하여 일대다 다대일 관계로 풀어서 설계 <br>
 - Cart - CartProduct - Product, 1 : M : 1 <br>
 - Order - OrderProduct - Product, 1 : M : 1 <br>
+
+## 기능 구현
+### 로그인, 회원가입
+- Spring Security 프레임워크와 Jwt 토큰방식으로 로그인 기능 구현
+- Oauth 2.0을 활용하여 카카오 소셜로그인 기능 구현
+- 회원 가입시 아이디, 닉네임 중복검사, 필수값 @NotEmpty Validation 체크, 비밀번호 확인 체크
+- 회원 가입 성공시 userId 리턴, 로그인 성공시 회원정보와 accessToken, refreshToken return
+- 로그인 시 refreshToken을 메모리 DB인 Redis에 저장 (ttl = 2주)
+- accessToken이 만료 됐을때 refreshToken으로 accessToken 재발급
+- 아이디 형식을 이메일로 설정, 카카오 로그인시 DB에서 이메일로 조회하여 이미 가입한 경우 회원가입 절차 패스
+- 회원가입시 계정과 일대일 매핑된 장바구니 생성
+
+    #### accessToken 재발급 조건
+    - refreshToken이 만료 되지 않았을때
+    - accessToken이 만료 되었을때(만료되지 않았을때 재발급 요청이 오면 해킹으로 간주)
+    - Header에 포함된 refreshToken과 Redis에 저장된 refreshToken이 일치할때
+
+### 상품 CRUD
+- SecurityConfig에서 @EnableGlobalMethodSecurity(securedEnabled = true)으로 @Secured 애노테이션을 활성화 하여 관리자만 등록, 수정, 삭제 가능하도록 구현
+
+### 장바구니 CRUD
+- 장바구니 등록, 수정 시 상품의 판매상태(SELLING, SOLDOUT)를 확인하고 재고 수량보다 많은 수량을 등록, 수정하면 예외처리
+- 장바구니 상품 삭제시 리스트로 요청하여 다수의 상품 삭제 가능
+
+### 주문 CRUD
+- 상품 주문시 상품의 판매상태(SELLING, SOLDOUT)를 확인하고 재고 수량보다 많은 수량을 주문하면 예외처리
+- 상품 주문 접수, 주문 취소, 배송 완료 시 로그 출력
+- 주문 취소 시 이미 주문 취소 상태이거나 배송 완료 상태인 경우 예외처리
+- 주문 접수, 주문 취소 완료시 상품 테이블에서 재고 수량 업데이트
+- 주문 접수, 주문 취소 다중 처리 가능, 단일 주문 취소 가능
+
+## 트러블 슈팅
+### LazyInitializationException

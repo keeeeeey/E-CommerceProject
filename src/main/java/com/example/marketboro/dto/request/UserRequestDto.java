@@ -3,6 +3,7 @@ package com.example.marketboro.dto.request;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 public class UserRequestDto {
@@ -12,6 +13,7 @@ public class UserRequestDto {
     public static class JoinRequestDto {
 
         @NotEmpty(message = "사용할 아이디를 입력해주세요.")
+        @Email(message = "이메일 형식으로 입력해주세요.")
         private String username;
 
         @NotEmpty(message = "사용할 비밀번호를 입력해주세요.")
@@ -32,6 +34,7 @@ public class UserRequestDto {
     public static class LoginRequestDto {
 
         @NotEmpty(message = "아이디를 입력해주세요.")
+        @Email(message = "이메일 형식으로 입력해주세요.")
         private String username;
 
         @NotEmpty(message = "비밀번호를 입력해주세요.")
