@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class CartProduct extends Timestamped {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_product_id")
     private Long id;
 

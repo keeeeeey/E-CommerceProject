@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class Order extends Timestamped {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
     private Long id;
 

@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class OrderProduct {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_product_id")
     private Long id;
 
