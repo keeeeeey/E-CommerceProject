@@ -4,6 +4,7 @@ import com.example.marketboro.dto.request.CartRequestDto.AddCartDto;
 import com.example.marketboro.dto.request.CartRequestDto.DeleteCartDto;
 import com.example.marketboro.dto.request.CartRequestDto.UpdateCartDto;
 import com.example.marketboro.dto.request.CommonDto.IdDto;
+import com.example.marketboro.dto.response.CartProductResponseDto;
 import com.example.marketboro.entity.Cart;
 import com.example.marketboro.entity.CartProduct;
 import com.example.marketboro.entity.Product;
@@ -18,6 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -66,11 +70,15 @@ public class CartService {
     }
 
     @Transactional(readOnly = true)
-    public List<CartProduct> getAllCartProduct(Long userId) {
+    public List<CartProductResponseDto> getAllCartProduct(Long userId) {
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR));
         List<CartProduct> cartProductList = cartProductRepository.findAllByCartId(cart.getId());
-        return cartProductList;
+        List<CartProductResponseDto> responseDto = cartProductList
+                .stream()
+                .map(o -> new CartProductResponseDto(o))
+                .collect(toList());
+        return responseDto;
     }
 
     private void productCountValidation(Product product, int productcount) {

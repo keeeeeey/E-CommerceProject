@@ -4,6 +4,7 @@ import com.example.marketboro.dto.request.CommonDto.IdDto;
 import com.example.marketboro.dto.request.CommonDto.OrderDto;
 import com.example.marketboro.dto.request.OrderRequestDto.CancelOrderDto;
 import com.example.marketboro.dto.request.OrderRequestDto.CreateOrderDto;
+import com.example.marketboro.dto.response.OrderProductResponseDto;
 import com.example.marketboro.entity.*;
 import com.example.marketboro.exception.ErrorCode;
 import com.example.marketboro.exception.ErrorCustomException;
@@ -18,6 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -97,7 +101,7 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public List<OrderProduct> getAllOrder(Long userId) {
+    public List<OrderProductResponseDto> getAllOrder(Long userId) {
         List<Order> orderList = orderRepository.findAllByUserId(userId);
         List<OrderProduct> orderProductList = new ArrayList<>();
         orderList.forEach((order) -> {
@@ -106,7 +110,11 @@ public class OrderService {
                 orderProductList.add(findOrderProduct);
             });
         });
-        return orderProductList;
+        List<OrderProductResponseDto> responseDto = orderProductList
+                .stream()
+                .map(o -> new OrderProductResponseDto(o))
+                .collect(toList());
+        return responseDto;
     }
 
 }
