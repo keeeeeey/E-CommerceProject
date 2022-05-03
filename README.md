@@ -7,6 +7,7 @@
 - User - Order 1:M 연관관계 <br>
 - Cart - Product M:M 연관관계 <br>
 - Order - Product M:M 연관관계 <br>
+
 다대다 연관관계 매핑의 경우 예상치 못한 쿼리가 나갈수 있어 중간 테이블을 생성하여 일대다 다대일 관계로 풀어서 설계 <br>
 - Cart - CartProduct - Product, 1 : M : 1 <br>
 - Order - OrderProduct - Product, 1 : M : 1 <br>
