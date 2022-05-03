@@ -8,8 +8,8 @@ import com.example.marketboro.dto.response.OrderProductResponseDto;
 import com.example.marketboro.entity.*;
 import com.example.marketboro.exception.ErrorCode;
 import com.example.marketboro.exception.ErrorCustomException;
-import com.example.marketboro.repository.OrderProductRepository;
-import com.example.marketboro.repository.OrderRepository;
+import com.example.marketboro.repository.order.OrderProductRepository;
+import com.example.marketboro.repository.order.OrderRepository;
 import com.example.marketboro.repository.ProductRepository;
 import com.example.marketboro.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -103,17 +102,13 @@ public class OrderService {
     @Transactional(readOnly = true)
     public List<OrderProductResponseDto> getAllOrder(Long userId) {
         List<Order> orderList = orderRepository.findAllByUserId(userId);
-        List<OrderProduct> orderProductList = new ArrayList<>();
+        List<OrderProductResponseDto> responseDto = new ArrayList<>();
         orderList.forEach((order) -> {
-            List<OrderProduct> findOrderProductList = orderProductRepository.findAllByOrderId(order.getId());
+            List<OrderProductResponseDto> findOrderProductList = orderProductRepository.findOrderProductByOrderId(order.getId());
             findOrderProductList.forEach((findOrderProduct) -> {
-                orderProductList.add(findOrderProduct);
+                responseDto.add(findOrderProduct);
             });
         });
-        List<OrderProductResponseDto> responseDto = orderProductList
-                .stream()
-                .map(o -> new OrderProductResponseDto(o))
-                .collect(toList());
         return responseDto;
     }
 

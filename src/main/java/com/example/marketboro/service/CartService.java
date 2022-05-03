@@ -11,17 +11,14 @@ import com.example.marketboro.entity.Product;
 import com.example.marketboro.entity.ProductEnum;
 import com.example.marketboro.exception.ErrorCode;
 import com.example.marketboro.exception.ErrorCustomException;
-import com.example.marketboro.repository.CartProductRepository;
-import com.example.marketboro.repository.CartRepository;
+import com.example.marketboro.repository.cart.CartProductRepository;
+import com.example.marketboro.repository.cart.CartRepository;
 import com.example.marketboro.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -73,11 +70,12 @@ public class CartService {
     public List<CartProductResponseDto> getAllCartProduct(Long userId) {
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR));
-        List<CartProduct> cartProductList = cartProductRepository.findAllByCartId(cart.getId());
-        List<CartProductResponseDto> responseDto = cartProductList
-                .stream()
-                .map(o -> new CartProductResponseDto(o))
-                .collect(toList());
+//        List<CartProduct> cartProductList = cartProductRepository.findAllByCartId(cart.getId());
+//        List<CartProductResponseDto> responseDto = cartProductList
+//                .stream()
+//                .map(o -> new CartProductResponseDto(o))
+//                .collect(toList());
+        List<CartProductResponseDto> responseDto = cartProductRepository.findCartProductByCartId(cart.getId());
         return responseDto;
     }
 

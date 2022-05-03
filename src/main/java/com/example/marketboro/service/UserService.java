@@ -8,7 +8,7 @@ import com.example.marketboro.entity.User;
 import com.example.marketboro.entity.UserRoleEnum;
 import com.example.marketboro.exception.ErrorCode;
 import com.example.marketboro.exception.ErrorCustomException;
-import com.example.marketboro.repository.CartRepository;
+import com.example.marketboro.repository.cart.CartRepository;
 import com.example.marketboro.repository.UserRepository;
 import com.example.marketboro.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;

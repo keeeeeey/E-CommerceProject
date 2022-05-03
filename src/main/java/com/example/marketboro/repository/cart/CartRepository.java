@@ -1,4 +1,4 @@
-package com.example.marketboro.repository;
+package com.example.marketboro.repository.cart;
 
 import com.example.marketboro.entity.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;

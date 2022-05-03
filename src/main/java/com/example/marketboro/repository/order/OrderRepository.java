@@ -1,4 +1,4 @@
-package com.example.marketboro.repository;
+package com.example.marketboro.repository.order;
 
 import com.example.marketboro.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;

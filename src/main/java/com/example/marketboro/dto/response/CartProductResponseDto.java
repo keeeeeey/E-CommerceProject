@@ -16,13 +16,14 @@ public class CartProductResponseDto {
     private int productcount;
 
     @Builder
-    public CartProductResponseDto(CartProduct cartProduct) {
-        this.cartProductId = cartProduct.getId();
-        this.productId = cartProduct.getProduct().getId();
-        this.productname = cartProduct.getProduct().getProductname();
-        this.productinfo = cartProduct.getProduct().getProductinfo();
-        this.productprice = cartProduct.getProduct().getProductprice();
-        this.productcount = cartProduct.getProductcount();
+    public CartProductResponseDto(final Long cartProductId, final Long productId, final String productname,
+                                  final String productinfo, final int productprice, final int productcount) {
+        this.cartProductId = cartProductId;
+        this.productId = productId;
+        this.productname = productname;
+        this.productinfo = productinfo;
+        this.productprice = productprice;
+        this.productcount = productcount;
     }
 
 }
