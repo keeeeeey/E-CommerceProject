@@ -8,9 +8,11 @@
 - Cart - Product M:M 연관관계 <br>
 - Order - Product M:M 연관관계 <br>
 
-### 다대다 연관관계 매핑의 경우 예상치 못한 쿼리가 나갈수 있어 중간 테이블을 생성하여 일대다 다대일 관계로 풀어서 설계 <br>
+##### 다대다 연관관계 매핑의 경우 예상치 못한 쿼리가 나갈수 있어 중간 테이블을 생성하여 일대다 다대일 관계로 풀어서 설계 <br>
 - Cart - CartProduct - Product, 1 : M : 1 <br>
 - Order - OrderProduct - Product, 1 : M : 1 <br>
+
+<br>
 
 ## 기능 구현
 ### 로그인, 회원가입
@@ -28,12 +30,18 @@
     - accessToken이 만료 되었을때(만료되지 않았을때 재발급 요청이 오면 해킹으로 간주)
     - Header에 포함된 refreshToken과 Redis에 저장된 refreshToken이 일치할때
 
+<br>
+
 ### 상품 CRUD
 - SecurityConfig에서 @EnableGlobalMethodSecurity(securedEnabled = true)으로 @Secured 애노테이션을 활성화 하여 관리자만 등록, 수정, 삭제 가능하도록 구현
+
+<br>
 
 ### 장바구니 CRUD
 - 장바구니 등록, 수정 시 상품의 판매상태(SELLING, SOLDOUT)를 확인하고 재고 수량보다 많은 수량을 등록, 수정하면 예외처리
 - 장바구니 상품 삭제시 리스트로 요청하여 다수의 상품 삭제 가능
+
+<br>
 
 ### 주문 CRUD
 - 상품 주문시 상품의 판매상태(SELLING, SOLDOUT)를 확인하고 재고 수량보다 많은 수량을 주문하면 예외처리
@@ -41,6 +49,8 @@
 - 주문 취소 시 이미 주문 취소 상태이거나 배송 완료 상태인 경우 예외처리
 - 주문 접수, 주문 취소 완료시 상품 테이블에서 재고 수량 업데이트
 - 주문 접수, 주문 취소 다중 처리 가능, 단일 주문 취소 가능
+
+<br>
 
 ## 트러블 슈팅
 ### LazyInitializationException
