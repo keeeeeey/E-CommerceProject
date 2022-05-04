@@ -1,5 +1,6 @@
 package com.example.marketboro.dto.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ public class UserRequestDto {
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class JoinRequestDto {
 
         @NotEmpty(message = "사용할 아이디를 입력해주세요.")

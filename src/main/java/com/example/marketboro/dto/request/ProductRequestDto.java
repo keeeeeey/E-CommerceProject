@@ -1,5 +1,6 @@
 package com.example.marketboro.dto.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ public class ProductRequestDto {
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class CreateProduct {
 
         @NotEmpty(message = "상품명을 입력해주세요.")
