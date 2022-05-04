@@ -19,10 +19,12 @@ public class CommonDto {
     @NoArgsConstructor
     public static class OrderDto {
         private Long productId;
+        private Long cartProductId;
         private int productcount;
 
-        public OrderDto(final Long productId, final int productcount) {
+        public OrderDto(final Long productId, final Long cartProductId, final int productcount) {
             this.productId = productId;
+            this.cartProductId = cartProductId;
             this.productcount = productcount;
         }
     }

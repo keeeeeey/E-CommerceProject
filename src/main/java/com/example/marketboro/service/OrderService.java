@@ -8,6 +8,7 @@ import com.example.marketboro.dto.response.OrderProductResponseDto;
 import com.example.marketboro.entity.*;
 import com.example.marketboro.exception.ErrorCode;
 import com.example.marketboro.exception.ErrorCustomException;
+import com.example.marketboro.repository.cart.CartProductRepository;
 import com.example.marketboro.repository.order.OrderProductRepository;
 import com.example.marketboro.repository.order.OrderRepository;
 import com.example.marketboro.repository.ProductRepository;
@@ -29,6 +30,7 @@ public class OrderService {
 
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
+    private final CartProductRepository cartProductRepository;
     private final OrderRepository orderRepository;
     private final OrderProductRepository orderProductRepository;
 
@@ -59,6 +61,8 @@ public class OrderService {
 
             OrderProduct saveOrderProduct = orderProductRepository.save(orderProduct);
             product.minusLeftProduct(orderDto.getProductcount());
+
+            cartProductRepository.deleteById(orderDto.getCartProductId());
 
             orderProductIdList.add(saveOrderProduct.getId());
             log.info(saveOrderProduct.getId() + "번 상품 주문 접수");
