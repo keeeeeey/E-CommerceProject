@@ -54,9 +54,9 @@
 
 ## 트러블 슈팅
 ### LazyInitializationException
-영속성 컨텍스트가 닫히기 전 서비스단에서 모든 로직을 구현하고 메소드마다 @Transactional 애노테이션을 걸어 주었는데도 LazyInitializationException 에러가 발생
-서비스단에서 컨트롤러단으로 값을 전달할때 리스트의 제네릭타입을 DTO가 아닌 CartProduct 엔티티로 전달한 것이 문제였고 CartProduct 엔티티로 조회한뒤 stream().map().collect(toList())로 타입 변경한뒤 전달하여 문제를 해결
-서비스단의 코드를 간소화 하고자 조회할때 DTO로 조회를 하도록 구현하였고 DTO 매핑이 쉬운 Querrydsl을 적용
+영속성 컨텍스트가 닫히기 전 서비스단에서 모든 로직을 구현하고 메소드마다 @Transactional 애노테이션을 걸어 주었는데도 LazyInitializationException 에러가 발생 <br>
+서비스단에서 컨트롤러단으로 값을 전달할때 리스트의 제네릭타입을 DTO가 아닌 CartProduct 엔티티로 전달한 것이 문제였고 CartProduct 엔티티로 조회한뒤 stream().map().collect(toList())로 타입 변경한뒤 전달하여 문제를 해결 <br>
+서비스단의 코드를 간소화 하고자 조회할때 DTO로 조회를 하도록 구현하였고 DTO 매핑이 쉬운 Querrydsl을 적용 <br>
 
 리스트 타입이 CartProduct
 ```java
