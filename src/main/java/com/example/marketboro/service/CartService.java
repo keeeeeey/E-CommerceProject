@@ -15,6 +15,8 @@ import com.example.marketboro.repository.cart.CartProductRepository;
 import com.example.marketboro.repository.cart.CartRepository;
 import com.example.marketboro.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,10 +69,11 @@ public class CartService {
     }
 
     @Transactional(readOnly = true)
-    public List<CartProductResponseDto> getAllCartProduct(Long userId) {
+    public List<CartProductResponseDto> getAllCartProduct(Long userId, int start) {
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR));
-        List<CartProductResponseDto> responseDto = cartProductRepository.findCartProductByCartId(cart.getId());
+        Pageable pageable = PageRequest.of(start, 10);
+        List<CartProductResponseDto> responseDto = cartProductRepository.findCartProductByCartId(cart.getId(), pageable);
         return responseDto;
     }
 

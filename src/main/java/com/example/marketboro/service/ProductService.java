@@ -7,9 +7,10 @@ import com.example.marketboro.entity.ProductEnum;
 import com.example.marketboro.exception.ErrorCode;
 import com.example.marketboro.exception.ErrorCustomException;
 import com.example.marketboro.repository.cart.CartProductRepository;
-import com.example.marketboro.repository.order.OrderProductRepository;
 import com.example.marketboro.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,8 +51,9 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public List<Product> getAllProduct() {
-        List<Product> productList = productRepository.findAll();
+    public List<Product> getAllProduct(int start) {
+        Pageable pageable = PageRequest.of(start, 10);
+        List<Product> productList = productRepository.findAllByOrderByModifiedAtDesc(pageable);
         return productList;
     }
 

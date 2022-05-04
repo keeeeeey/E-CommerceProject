@@ -58,9 +58,9 @@ public class ProductController {
     }
 
     @GetMapping("/api/product")
-    public ResponseEntity<Success> getAllProduct() {
+    public ResponseEntity<Success> getAllProduct(@RequestParam("start") int start) {
         return new ResponseEntity<>(new Success("전체 상품 조회",
-                productService.getAllProduct()), HttpStatus.OK);
+                productService.getAllProduct(start)), HttpStatus.OK);
     }
 
     @GetMapping("/api/product/{productId}")
