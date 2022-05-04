@@ -54,3 +54,43 @@
 
 ## 트러블 슈팅
 ### LazyInitializationException
+영속성 컨텍스트가 닫히기 전 서비스단에서 모든 로직을 구현하고 메소드마다 @Transactional 애노테이션을 걸어 주었는데도 LazyInitializationException 에러가 발생
+서비스단에서 컨트롤러단으로 값을 전달할때 리스트의 제네릭타입을 DTO가 아닌 CartProduct 엔티티로 전달한 것이 문제였고 CartProduct 엔티티로 조회한뒤 stream().map().collect(toList())로 타입 변경한뒤 전달하여 문제를 해결
+서비스단의 코드를 간소화 하고자 조회할때 DTO로 조회를 하도록 구현하였고 DTO 매핑이 쉬운 Querrydsl을 적용
+
+리스트 타입이 CartProduct
+```java
+@Transactional(readOnly = true)
+public List<CartProduct> getAllCartProduct(Long userId) {
+    Cart cart = cartRepository.findByUserId(userId)
+            .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR));
+    List<CartProduct> cartProductList = cartProductRepository.findAllByCartId(cart.getId());
+    return cartProductList;
+}
+```
+
+리스트 타입을 CartProductResponDto로 수정
+```java
+@Transactional(readOnly = true)
+public List<CartProductResponseDto> getAllCartProduct(Long userId) {
+    Cart cart = cartRepository.findByUserId(userId)
+            .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR));
+    List<CartProduct> cartProductList = cartProductRepository.findAllByCartId(cart.getId());
+    List<CartProductResponseDto> responseDto = cartProductList
+            .stream()
+            .map(o -> new CartProductResponseDto(o))
+            .collect(toList());
+    return responseDto;
+}
+```
+
+Querrydsl을 적용하여 CartProductResponseDto로 장바구니 조회
+```java
+@Transactional(readOnly = true)
+public List<CartProductResponseDto> getAllCartProduct(Long userId) {
+    Cart cart = cartRepository.findByUserId(userId)
+            .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR));
+    List<CartProductResponseDto> responseDto = cartProductRepository.findCartProductByCartId(cart.getId());
+    return responseDto;
+}
+```
