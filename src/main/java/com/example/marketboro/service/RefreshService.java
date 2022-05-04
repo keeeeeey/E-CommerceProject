@@ -21,7 +21,7 @@ public class RefreshService {
     @Transactional
     public TokenResponseDto refresh(String accessToken, String refreshToken) {
         // 리프레시 토큰 기간 만료 에러
-        if (!jwtTokenProvider.validateToken(refreshToken)) {
+        if (!jwtTokenProvider.validateRefreshToken(refreshToken)) {
             throw new ErrorCustomException(ErrorCode.REFRESH_EXPIRATION_ERROR);
         }
 
@@ -30,7 +30,7 @@ public class RefreshService {
         User user = userRepository.findByUsername(userPk)
                 .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_USER_ERROR));
 
-        if (jwtTokenProvider.validateToken(accessToken)) {
+        if (jwtTokenProvider.validateRefreshToken(accessToken)) {
             redisService.delValues(userPk);
             throw new ErrorCustomException(ErrorCode.TOKEN_EXPIRATION_ERROR);
         }

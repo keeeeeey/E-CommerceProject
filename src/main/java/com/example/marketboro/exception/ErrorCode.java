@@ -11,6 +11,7 @@ public enum ErrorCode {
     NO_MATCH_PASSWORD_ERROR(400, "V003","비밀번호가 일치하지 않습니다."),
     NO_AUTHENTICATION_ERROR(401, "401-1", "로그인 후 사용가능합니다."),
     TOKEN_EXPIRATION_ERROR(401,"401-2","로그인 정보가 만료되었습니다."),
+    EXPIRED_JWT_ERROR(444,"A007", "기존 토큰이 만료되었습니다."),
     REFRESH_EXPIRATION_ERROR(401,"401-3","리프레시 토큰이 만료되었습니다."),
     NO_AUTHORIZATION_ERROR(403,"403-1","접근 권한이 없습니다."),
     NO_MATCH_USER_ERROR(403,"403-2","작성자만 수정 및 삭제가 가능합니다."),

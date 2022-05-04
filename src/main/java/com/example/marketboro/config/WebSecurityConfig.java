@@ -1,7 +1,9 @@
 package com.example.marketboro.config;
 
+import com.example.marketboro.security.AuthenticationEntryPointHandler;
 import com.example.marketboro.security.JwtAuthenticationFilter;
 import com.example.marketboro.security.JwtTokenProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,16 +18,14 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
-
-    public WebSecurityConfig(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
+    private final AuthenticationEntryPointHandler authenticationEntryPointHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -53,6 +53,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/product/**").permitAll()
                 .anyRequest().authenticated() // 그외 나머지 요청은 사용권한 체크
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPointHandler)
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class);

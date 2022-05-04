@@ -54,6 +54,9 @@ dependencies {
     // querydsl 추가
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+    // Json
+    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
 }
 
 tasks.named('test') {
