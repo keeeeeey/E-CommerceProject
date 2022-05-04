@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 public class ProductRequestDto {
 
@@ -16,10 +17,10 @@ public class ProductRequestDto {
 
         private String productinfo;
 
-        @NotEmpty(message = "상품의 가격을 입력해주세요.")
+        @NotNull(message = "상품의 가격을 입력해주세요.")
         private int productprice;
 
-        @NotEmpty(message = "상품의 재고를 입력해주세요.")
+        @NotNull(message = "상품의 재고를 입력해주세요.")
         private int leftproduct;
     }
 
@@ -32,10 +33,10 @@ public class ProductRequestDto {
 
         private String productinfo;
 
-        @NotEmpty(message = "상품의 가격을 입력해주세요.")
+        @NotNull(message = "상품의 가격을 입력해주세요.")
         private int productprice;
 
-        @NotEmpty(message = "상품의 재고를 입력해주세요.")
+        @NotNull(message = "상품의 재고를 입력해주세요.")
         private int leftproduct;
 
         @NotEmpty(message = "상품의 재고상태를 입력해주세요.")

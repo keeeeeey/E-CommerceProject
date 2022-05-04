@@ -70,11 +70,6 @@ public class CartService {
     public List<CartProductResponseDto> getAllCartProduct(Long userId) {
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR));
-//        List<CartProduct> cartProductList = cartProductRepository.findAllByCartId(cart.getId());
-//        List<CartProductResponseDto> responseDto = cartProductList
-//                .stream()
-//                .map(o -> new CartProductResponseDto(o))
-//                .collect(toList());
         List<CartProductResponseDto> responseDto = cartProductRepository.findCartProductByCartId(cart.getId());
         return responseDto;
     }

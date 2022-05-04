@@ -21,7 +21,6 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CartProductRepository cartProductRepository;
-    private final OrderProductRepository orderProductRepository;
 
     @Transactional
     public Long createProduct(CreateProduct requestDto) {
@@ -46,8 +45,7 @@ public class ProductService {
 
     @Transactional
     public void deleteProduct(Long productId) {
-//        cartProductRepository.deleteByProductId(productId);
-//        orderProductRepository.deleteByProductId(productId);
+        cartProductRepository.deleteByProductId(productId);
         productRepository.deleteById(productId);
     }
 
