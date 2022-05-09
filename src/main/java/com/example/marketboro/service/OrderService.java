@@ -18,10 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +35,8 @@ public class OrderService {
     private final OrderProductRepository orderProductRepository;
 
     @Transactional
-    public List<Long> createOrder(Long userId, CreateOrderDto requestDto) {
+    public List<Long> createOrder(Long userId, CreateOrderDto requestDto, HttpServletRequest request) {
+        HttpSession httpSession = request.getSession();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_USER_ERROR));
         Order order = Order.builder()
@@ -67,7 +68,7 @@ public class OrderService {
             orderProductIdList.add(saveOrderProduct.getId());
             log.info(saveOrderProduct.getId() + "번 상품 주문 접수");
         });
-
+        httpSession.setAttribute("orderId", order.getId());
         return orderProductIdList;
     }
 

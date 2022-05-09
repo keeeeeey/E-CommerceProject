@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequiredArgsConstructor
 public class OrderController {
@@ -21,10 +23,11 @@ public class OrderController {
 
     @PostMapping("/api/order")
     public ResponseEntity<Success> createOrder(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                               @RequestBody CreateOrderDto requestDto) {
+                                               @RequestBody CreateOrderDto requestDto,
+                                               HttpServletRequest request) {
         if (userDetails != null) {
             return new ResponseEntity<>(new Success("상품 주문 접수",
-                    orderService.createOrder(userDetails.getUser().getId(), requestDto)), HttpStatus.OK);
+                    orderService.createOrder(userDetails.getUser().getId(), requestDto, request)), HttpStatus.OK);
         }
         throw new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR);
     }
