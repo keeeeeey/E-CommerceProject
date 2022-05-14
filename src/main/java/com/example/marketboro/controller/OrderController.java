@@ -7,6 +7,7 @@ import com.example.marketboro.exception.ErrorCode;
 import com.example.marketboro.exception.ErrorCustomException;
 import com.example.marketboro.security.UserDetailsImpl;
 import com.example.marketboro.service.OrderService;
+import com.example.marketboro.validator.AuthenticationValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,39 +26,31 @@ public class OrderController {
     public ResponseEntity<Success> createOrder(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                @RequestBody CreateOrderDto requestDto,
                                                HttpServletRequest request) {
-        if (userDetails != null) {
-            return new ResponseEntity<>(new Success("상품 주문 접수",
-                    orderService.createOrder(userDetails.getUser().getId(), requestDto, request)), HttpStatus.OK);
-        }
-        throw new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR);
+        AuthenticationValidator.authenticationValidator(userDetails);
+        return new ResponseEntity<>(new Success("상품 주문 접수",
+                orderService.createOrder(userDetails.getUser().getId(), requestDto, request)), HttpStatus.OK);
     }
 
     @PatchMapping("/api/order")
     public ResponseEntity<Success> cancelOrder(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                @RequestBody CancelOrderDto requestDto) {
-        if (userDetails != null) {
-            return new ResponseEntity<>(new Success("상품 주문 취소",
-                    orderService.cancelOrder(requestDto)), HttpStatus.OK);
-        }
-        throw new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR);
+        AuthenticationValidator.authenticationValidator(userDetails);
+        return new ResponseEntity<>(new Success("상품 주문 취소",
+                orderService.cancelOrder(requestDto)), HttpStatus.OK);
     }
 
     @PatchMapping("/api/order/{orderProductId}")
     public ResponseEntity<Success> finishDelivery(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                   @PathVariable Long orderProductId) {
-        if (userDetails != null) {
-            return new ResponseEntity<>(new Success("상품 배송 완료",
-                    orderService.finishDelivery(orderProductId)), HttpStatus.OK);
-        }
-        throw new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR);
+        AuthenticationValidator.authenticationValidator(userDetails);
+        return new ResponseEntity<>(new Success("상품 배송 완료",
+                orderService.finishDelivery(orderProductId)), HttpStatus.OK);
     }
 
     @GetMapping("/api/order")
     public ResponseEntity<Success> getAllOrder(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if (userDetails != null) {
-            return new ResponseEntity<>(new Success("전체 주문 조회",
-                    orderService.getAllOrder(userDetails.getUser().getId())), HttpStatus.OK);
-        }
-        throw new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR);
+        AuthenticationValidator.authenticationValidator(userDetails);
+        return new ResponseEntity<>(new Success("전체 주문 조회",
+                orderService.getAllOrder(userDetails.getUser().getId())), HttpStatus.OK);
     }
 }

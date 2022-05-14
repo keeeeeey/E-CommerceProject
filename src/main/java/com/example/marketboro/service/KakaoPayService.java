@@ -3,8 +3,6 @@ package com.example.marketboro.service;
 import com.example.marketboro.dto.KakaoOrderDto;
 import com.example.marketboro.dto.KakaoPayReadyVo;
 import com.example.marketboro.entity.OrderProduct;
-import com.example.marketboro.exception.ErrorCode;
-import com.example.marketboro.exception.ErrorCustomException;
 import com.example.marketboro.repository.order.OrderProductRepository;
 import com.example.marketboro.repository.order.OrderRepository;
 import com.example.marketboro.security.UserDetailsImpl;
@@ -30,7 +28,6 @@ import java.util.List;
 @Log
 public class KakaoPayService {
 
-    private final OrderRepository orderRepository;
     private final OrderProductRepository orderProductRepository;
 
     private static final String HOST = "https://kapi.kakao.com";

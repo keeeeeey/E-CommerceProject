@@ -8,6 +8,7 @@ import com.example.marketboro.exception.ErrorCode;
 import com.example.marketboro.exception.ErrorCustomException;
 import com.example.marketboro.security.UserDetailsImpl;
 import com.example.marketboro.service.ProductService;
+import com.example.marketboro.validator.AuthenticationValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,11 +28,9 @@ public class ProductController {
     @PostMapping("/api/product")
     public ResponseEntity<Success> createProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                  @Valid @RequestBody CreateProduct requestDto) {
-        if (userDetails != null) {
-            return new ResponseEntity<>(new Success("상품 등록",
-                    productService.createProduct(requestDto)), HttpStatus.OK);
-        }
-        throw new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR);
+        AuthenticationValidator.authenticationValidator(userDetails);
+        return new ResponseEntity<>(new Success("상품 등록",
+                productService.createProduct(requestDto)), HttpStatus.OK);
     }
 
     @Secured(UserRoleEnum.Authority.ADMIN)
@@ -39,22 +38,18 @@ public class ProductController {
     public ResponseEntity<Success> updateProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                  @Valid @RequestBody UpdateProduct requestDto,
                                                  @PathVariable Long productId) {
-        if (userDetails != null) {
-            return new ResponseEntity<>(new Success("상품 정보 수정",
-                    productService.updateProduct(requestDto, productId)), HttpStatus.OK);
-        }
-        throw new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR);
+        AuthenticationValidator.authenticationValidator(userDetails);
+        return new ResponseEntity<>(new Success("상품 정보 수정",
+                productService.updateProduct(requestDto, productId)), HttpStatus.OK);
     }
 
     @Secured(UserRoleEnum.Authority.ADMIN)
     @DeleteMapping("/api/product/{productId}")
     public ResponseEntity<Success> deleteProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                  @PathVariable Long productId) {
-        if (userDetails != null) {
-            productService.deleteProduct(productId);
-            return new ResponseEntity<>(new Success("상품 삭제", ""), HttpStatus.OK);
-        }
-        throw new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR);
+        AuthenticationValidator.authenticationValidator(userDetails);
+        productService.deleteProduct(productId);
+        return new ResponseEntity<>(new Success("상품 삭제", ""), HttpStatus.OK);
     }
 
     @GetMapping("/api/product")
