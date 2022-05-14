@@ -44,6 +44,8 @@ public class KakaoService {
     }
 
     private String getAccessToken(String code) throws JsonProcessingException {
+        String clientId = System.getenv("clientId");
+
         // HTTP Header 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -51,7 +53,7 @@ public class KakaoService {
         // HTTP Body 생성
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
-        body.add("client_id", "b6444d179d6392c0a081f448f8528542");
+        body.add("client_id", clientId);
         body.add("redirect_uri", "http://localhost:8081/user/kakao/callback");
         body.add("code", code);
 
