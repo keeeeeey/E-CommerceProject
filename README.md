@@ -99,3 +99,35 @@ public List<CartProductResponseDto> getAllCartProduct(Long userId) {
     return responseDto;
 }
 ```
+
+<br>
+
+CartProductResponseDto로 매핑된 조회 sql문 작성
+```java
+@RequiredArgsConstructor
+public class CartProductRepositoryImpl implements CartProductRepositoryCustom {
+
+    private final JPAQueryFactory queryFactory;
+
+    @Override
+    public List<CartProductResponseDto> findCartProductByCartId(Long cartId, Pageable pageable) {
+        return queryFactory
+                .select(Projections.constructor(CartProductResponseDto.class,
+                    cartProduct.id,
+                    product.id,
+                    product.productname,
+                    product.productinfo,
+                    product.productprice,
+                    cartProduct.productcount
+                ))
+                .from(cartProduct)
+                .join(cartProduct.product, product)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .where(cartProduct.cart.id.eq(cartId))
+                .groupBy(cartProduct.id)
+                .orderBy(cartProduct.modifiedAt.desc())
+                .fetch();
+    }
+}
+```
