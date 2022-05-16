@@ -1,4 +1,4 @@
-# MarketboroAssignment
+# E-CommerceProject
 
 ## 테이블 설계
 <img width="763" alt="스크린샷 2022-05-03 오후 4 47 50" src="https://user-images.githubusercontent.com/87018762/166419933-6327c484-9d9e-4a48-bae0-908ef57a7ba5.png">
