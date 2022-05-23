@@ -16,26 +16,16 @@ import javax.persistence.EntityManager;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
-@Transactional
 public class ProductTest {
 
     @Autowired
     EntityManager em;
-
-    @Autowired
-    ProductRepository productRepository;
 
     private String productname;
     private String productinfo;
     private int productprice;
     private int leftproduct;
     private ProductEnum productEnum;
-
-    @AfterEach
-    public void setDown() {
-        productRepository.deleteAll();
-    }
 
     @BeforeEach
     public void setUp() {
@@ -67,13 +57,11 @@ public class ProductTest {
                 .productEnum(productEnum)
                 .build();
 
-        Product save = productRepository.save(product);
-
         //then
-        assertEquals(productname, save.getProductname());
-        assertEquals(productinfo, save.getProductinfo());
-        assertEquals(productprice, save.getProductprice());
-        assertEquals(leftproduct, save.getLeftproduct());
-        assertEquals(productEnum, save.getProductEnum());
+        assertEquals(productname, product.getProductname());
+        assertEquals(productinfo, product.getProductinfo());
+        assertEquals(productprice, product.getProductprice());
+        assertEquals(leftproduct, product.getLeftproduct());
+        assertEquals(productEnum, product.getProductEnum());
     }
 }

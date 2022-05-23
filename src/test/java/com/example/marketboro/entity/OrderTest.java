@@ -1,22 +1,16 @@
 package com.example.marketboro.entity;
 
-import com.example.marketboro.dto.request.UserRequestDto.JoinRequestDto;
-import com.example.marketboro.repository.UserRepository;
-import org.junit.jupiter.api.AfterEach;
+import com.example.marketboro.dto.request.UserRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.persistence.EntityManager;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class UserTest {
+public class OrderTest {
 
     @Autowired
     EntityManager em;
@@ -38,10 +32,10 @@ public class UserTest {
 
     @Test
     @DisplayName("정상 케이스")
-    public void joinUser() {
+    public void createOrder() {
 
         // given
-        JoinRequestDto requestDto = new JoinRequestDto(
+        UserRequestDto.JoinRequestDto requestDto = new UserRequestDto.JoinRequestDto(
                 username,
                 password,
                 passwordcheck,
@@ -58,12 +52,15 @@ public class UserTest {
                 .role(UserRoleEnum.USER)
                 .build();
 
-        //then
-        assertEquals(username, user.getUsername());
-        assertEquals(password, user.getPassword());
-        assertEquals(name, user.getName());
-        assertEquals(nickname, user.getNickname());
-        assertEquals(UserRoleEnum.USER, user.getRole());
-    }
+        Order order = Order.builder()
+                .user(user)
+                .build();
 
+        //then
+        assertEquals(username, order.getUser().getUsername());
+        assertEquals(password, order.getUser().getPassword());
+        assertEquals(name, order.getUser().getName());
+        assertEquals(nickname, order.getUser().getNickname());
+        assertEquals(UserRoleEnum.USER, order.getUser().getRole());
+    }
 }
