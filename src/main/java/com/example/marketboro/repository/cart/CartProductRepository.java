@@ -7,6 +7,4 @@ import java.util.List;
 
 public interface CartProductRepository extends JpaRepository<CartProduct, Long>, CartProductRepositoryCustom {
     void deleteByProductId(Long productId);
-
-    void deleteByCartIdAndProductId(Long id, Long id1);
 }

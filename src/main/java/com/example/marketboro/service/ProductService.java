@@ -26,10 +26,10 @@ public class ProductService {
     @Transactional
     public Long createProduct(CreateProduct requestDto) {
         Product product = Product.builder()
-                .productname(requestDto.getProductname())
-                .productinfo(requestDto.getProductinfo())
-                .productprice(requestDto.getProductprice())
-                .leftproduct(requestDto.getLeftproduct())
+                .productName(requestDto.getProductName())
+                .productInfo(requestDto.getProductInfo())
+                .productPrice(requestDto.getProductPrice())
+                .leftProduct(requestDto.getLeftProduct())
                 .productEnum(ProductEnum.SELLING)
                 .build();
         Product saveproduct = productRepository.save(product);

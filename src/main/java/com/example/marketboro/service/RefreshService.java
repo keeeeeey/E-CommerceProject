@@ -45,8 +45,8 @@ public class RefreshService {
         redisService.setValues(updateRefreshToken, userPk);
 
         return TokenResponseDto.builder()
-                .accesstoken(updateToken)
-                .refreshtoken(updateRefreshToken)
+                .accessToken(updateToken)
+                .refreshToken(updateRefreshToken)
                 .build();
     }
 

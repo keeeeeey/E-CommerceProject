@@ -37,12 +37,12 @@ public class CartService {
         Product product = productRepository.findById(requestDto.getProductId())
                 .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_EXISTENCE_ERROR));
 
-        productCountValidation(product, requestDto.getProductcount());
+        productCountValidation(product, requestDto.getProductCount());
 
         CartProduct cartProduct = CartProduct.builder()
                 .cart(cart)
                 .product(product)
-                .productcount(requestDto.getProductcount())
+                .productCount(requestDto.getProductCount())
                 .build();
         CartProduct saveCartProduct = cartProductRepository.save(cartProduct);
         return saveCartProduct.getId();
@@ -53,7 +53,7 @@ public class CartService {
         CartProduct cartProduct = cartProductRepository.findById(requestDto.getCartProductId())
                 .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_EXISTENCECART_ERROR));
 
-        productCountValidation(cartProduct.getProduct(), requestDto.getProductcount());
+        productCountValidation(cartProduct.getProduct(), requestDto.getProductCount());
 
         cartProduct.updateCartProduct(requestDto);
         return cartProduct.getId();
@@ -82,7 +82,7 @@ public class CartService {
             throw new ErrorCustomException(ErrorCode.SOLD_OUT_ERROR);
         }
 
-        if (productcount > product.getLeftproduct()) {
+        if (productcount > product.getLeftProduct()) {
             throw new ErrorCustomException(ErrorCode.SHORTAGE_PRODUCT_ERROR);
         }
     }

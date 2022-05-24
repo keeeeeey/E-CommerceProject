@@ -22,10 +22,10 @@ public class CartProductRepositoryImpl implements CartProductRepositoryCustom {
                 .select(Projections.constructor(CartProductResponseDto.class,
                     cartProduct.id,
                     product.id,
-                    product.productname,
-                    product.productinfo,
-                    product.productprice,
-                    cartProduct.productcount
+                    product.productName,
+                    product.productInfo,
+                    product.productPrice,
+                    cartProduct.productCount
                 ))
                 .from(cartProduct)
                 .join(cartProduct.product, product)

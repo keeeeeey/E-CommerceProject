@@ -21,10 +21,10 @@ public class OrderProductRepositoryImpl implements OrderProductRepositoryCustom 
                 .select(Projections.constructor(OrderProductResponseDto.class,
                     orderProduct.id,
                     product.id,
-                    product.productname,
-                    product.productinfo,
-                    product.productprice,
-                    orderProduct.productcount,
+                    product.productName,
+                    product.productInfo,
+                    product.productPrice,
+                    orderProduct.productCount,
                     orderProduct.orderStatus
                 ))
                 .from(orderProduct)

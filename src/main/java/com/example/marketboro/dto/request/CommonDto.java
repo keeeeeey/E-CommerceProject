@@ -20,12 +20,12 @@ public class CommonDto {
     public static class OrderDto {
         private Long productId;
         private Long cartProductId;
-        private int productcount;
+        private int productCount;
 
-        public OrderDto(final Long productId, final Long cartProductId, final int productcount) {
+        public OrderDto(final Long productId, final Long cartProductId, final int productCount) {
             this.productId = productId;
             this.cartProductId = cartProductId;
-            this.productcount = productcount;
+            this.productCount = productCount;
         }
     }
 }

@@ -12,14 +12,14 @@ public class CartRequestDto {
     @NoArgsConstructor
     public static class AddCartDto {
         private Long productId;
-        private int productcount;
+        private int productCount;
     }
 
     @Getter
     @NoArgsConstructor
     public static class UpdateCartDto {
         private Long cartProductId;
-        private int productcount;
+        private int productCount;
     }
 
     @Getter

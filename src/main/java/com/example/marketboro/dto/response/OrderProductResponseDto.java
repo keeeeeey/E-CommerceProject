@@ -12,22 +12,22 @@ public class OrderProductResponseDto {
 
     private Long orderProductId;
     private Long productId;
-    private String productname;
-    private String productinfo;
-    private int productprice;
-    private int productcount;
+    private String productName;
+    private String productInfo;
+    private int productPrice;
+    private int productCount;
     private OrderStatus orderStatus;
 
     @Builder
-    public OrderProductResponseDto(final Long orderProductId, final Long productId, final String productname,
-                                   final String productinfo, final int productprice, final int productcount,
+    public OrderProductResponseDto(final Long orderProductId, final Long productId, final String productName,
+                                   final String productInfo, final int productPrice, final int productCount,
                                    final OrderStatus orderStatus) {
         this.orderProductId = orderProductId;
         this.productId = productId;
-        this.productname = productname;
-        this.productinfo = productinfo;
-        this.productprice = productprice;
-        this.productcount = productcount;
+        this.productName = productName;
+        this.productInfo = productInfo;
+        this.productPrice = productPrice;
+        this.productCount = productCount;
         this.orderStatus = orderStatus;
     }
 }

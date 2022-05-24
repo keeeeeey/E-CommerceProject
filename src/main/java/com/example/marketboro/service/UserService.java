@@ -39,7 +39,7 @@ public class UserService {
         }
 
         String password = requestDto.getPassword();
-        String passwordCheck = requestDto.getPasswordcheck();
+        String passwordCheck = requestDto.getPasswordCheck();
 
         if (!password.equals(passwordCheck)) {
             throw new ErrorCustomException(ErrorCode.NO_MATCH_PASSWORD_ERROR);
@@ -84,16 +84,16 @@ public class UserService {
             throw new ErrorCustomException(ErrorCode.NO_MATCH_PASSWORD_ERROR);
         }
 
-        String accesstoken = jwtTokenProvider.createToken(user.getUsername());
-        String refreshtoken = jwtTokenProvider.createRefreshToken(user.getUsername());
-        redisService.setValues(refreshtoken, user.getUsername());
+        String accessToken = jwtTokenProvider.createToken(user.getUsername());
+        String refreshToken = jwtTokenProvider.createRefreshToken(user.getUsername());
+        redisService.setValues(refreshToken, user.getUsername());
 
         return LoginResponseDto.builder()
                 .username(user.getUsername())
                 .name(user.getName())
                 .nickname(user.getNickname())
-                .accesstoken(accesstoken)
-                .refreshtoken(refreshtoken)
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 }

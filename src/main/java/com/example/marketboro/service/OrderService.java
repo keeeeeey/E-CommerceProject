@@ -49,19 +49,19 @@ public class OrderService {
             Product product = productRepository.findById(orderDto.getProductId())
                     .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_EXISTENCE_ERROR));
 
-            if (product.getLeftproduct() < orderDto.getProductcount()) {
+            if (product.getLeftProduct() < orderDto.getProductCount()) {
                 throw new ErrorCustomException(ErrorCode.SHORTAGE_PRODUCT_ERROR);
             }
 
             OrderProduct orderProduct = OrderProduct.builder()
                     .order(saveOrder)
                     .product(product)
-                    .productcount(orderDto.getProductcount())
+                    .productCount(orderDto.getProductCount())
                     .orderStatus(OrderStatus.주문접수)
                     .build();
 
             OrderProduct saveOrderProduct = orderProductRepository.save(orderProduct);
-            product.minusLeftProduct(orderDto.getProductcount());
+            product.minusLeftProduct(orderDto.getProductCount());
 
             cartProductRepository.deleteById(orderDto.getCartProductId());
 
@@ -87,7 +87,7 @@ public class OrderService {
             }
 
             orderProduct.changeOrderStatus(OrderStatus.주문취소);
-            orderProduct.getProduct().plusLeftProduct(orderProduct.getProductcount());
+            orderProduct.getProduct().plusLeftProduct(orderProduct.getProductCount());
 
             cancelOrderProductIdList.add(orderProduct.getId());
             log.info(orderProduct.getId() + "번 주문 취소");

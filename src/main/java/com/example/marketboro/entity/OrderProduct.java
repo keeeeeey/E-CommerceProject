@@ -26,17 +26,17 @@ public class OrderProduct {
     private Product product;
 
     @Column(nullable = false)
-    private int productcount;
+    private int productCount;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
     @Builder
-    public OrderProduct(final Order order, final Product product, final int productcount,
+    public OrderProduct(final Order order, final Product product, final int productCount,
                         final OrderStatus orderStatus) {
         this.order = order;
         this.product = product;
-        this.productcount = productcount;
+        this.productCount = productCount;
         this.orderStatus = orderStatus;
     }
 

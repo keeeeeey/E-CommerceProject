@@ -133,8 +133,8 @@ public class KakaoService {
                 .username(kakaoUser.getUsername())
                 .name(kakaoUser.getName())
                 .nickname(kakaoUser.getNickname())
-                .accesstoken(accessToken)
-                .refreshtoken(refreshToken)
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 }

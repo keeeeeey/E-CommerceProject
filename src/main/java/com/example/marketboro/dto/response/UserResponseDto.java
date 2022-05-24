@@ -12,17 +12,17 @@ public class UserResponseDto {
         private String username;
         private String name;
         private String nickname;
-        private String accesstoken;
-        private String refreshtoken;
+        private String accessToken;
+        private String refreshToken;
 
         @Builder
         public LoginResponseDto(final String username, final String name, final String nickname,
-                                final String accesstoken, final String refreshtoken) {
+                                final String accessToken, final String refreshToken) {
             this.username = username;
             this.name = name;
             this.nickname = nickname;
-            this.accesstoken = accesstoken;
-            this.refreshtoken = refreshtoken;
+            this.accessToken = accessToken;
+            this.refreshToken = refreshToken;
         }
     }
 }

@@ -19,43 +19,43 @@ public class Product extends Timestamped {
     private Long id;
 
     @Column(nullable = false)
-    private String productname;
+    private String productName;
 
-    private String productinfo;
-
-    @Column(nullable = false)
-    private int productprice;
+    private String productInfo;
 
     @Column(nullable = false)
-    private int leftproduct;
+    private int productPrice;
+
+    @Column(nullable = false)
+    private int leftProduct;
 
     @Enumerated(EnumType.STRING)
     private ProductEnum productEnum;
 
     @Builder
-    public Product(final String productname, final String productinfo, final int productprice,
-                   final int leftproduct, final ProductEnum productEnum) {
-        this.productname = productname;
-        this.productinfo = productinfo;
-        this.productprice = productprice;
-        this.leftproduct = leftproduct;
+    public Product(final String productName, final String productInfo, final int productPrice,
+                   final int leftProduct, final ProductEnum productEnum) {
+        this.productName = productName;
+        this.productInfo = productInfo;
+        this.productPrice = productPrice;
+        this.leftProduct = leftProduct;
         this.productEnum = productEnum;
     }
 
     public void updateProduct(UpdateProduct requestDto) {
-        this.productname = requestDto.getProductname();
-        this.productinfo = requestDto.getProductinfo();
-        this.productprice = requestDto.getProductprice();
-        this.leftproduct = requestDto.getLeftproduct();
+        this.productName = requestDto.getProductName();
+        this.productInfo = requestDto.getProductInfo();
+        this.productPrice = requestDto.getProductPrice();
+        this.leftProduct = requestDto.getLeftProduct();
         this.productEnum = ProductEnum.valueOf(requestDto.getProductEnum());
     }
 
-    public void plusLeftProduct(int plusLeftproduct) {
-        this.leftproduct += plusLeftproduct;
+    public void plusLeftProduct(int plusLeftProduct) {
+        this.leftProduct += plusLeftProduct;
     }
 
-    public void minusLeftProduct(int minusLeftproduct) {
-        this.leftproduct -= minusLeftproduct;
+    public void minusLeftProduct(int minusLeftProduct) {
+        this.leftProduct -= minusLeftProduct;
     }
 
 }

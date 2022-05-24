@@ -22,7 +22,7 @@ public class UserRequestDto {
         private String password;
 
         @NotEmpty(message = "비밀번호가 일치하지 않습니다.")
-        private String passwordcheck;
+        private String passwordCheck;
 
         @NotEmpty(message = "사용할 이름을 입력해주세요.")
         private String name;

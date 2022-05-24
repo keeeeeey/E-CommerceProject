@@ -44,8 +44,8 @@ public class KakaoPayService {
         List<OrderProduct> orderProductList = orderProductRepository.findAllByOrderId(orderId);
 
         for (OrderProduct orderProduct : orderProductList) {
-            totalPrice = totalPrice + (orderProduct.getProduct().getProductprice() * orderProduct.getProductcount());
-            totalQty = totalQty + orderProduct.getProductcount();
+            totalPrice = totalPrice + (orderProduct.getProduct().getProductPrice() * orderProduct.getProductCount());
+            totalQty = totalQty + orderProduct.getProductCount();
         }
 
         KakaoOrderDto orderDto = KakaoOrderDto.builder()
