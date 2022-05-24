@@ -21,15 +21,15 @@ public class CartProductTest {
     // user
     private String username;
     private String password;
-    private String passwordcheck;
+    private String passwordCheck;
     private String name;
     private String nickname;
 
     // product
-    private String productname;
-    private String productinfo;
-    private int productprice;
-    private int leftproduct;
+    private String productName;
+    private String productInfo;
+    private int productPrice;
+    private int leftProduct;
     private ProductEnum productEnum;
 
     @BeforeEach
@@ -37,15 +37,15 @@ public class CartProductTest {
         // user
         username = "username@username.com";
         password = "password";
-        passwordcheck = "password";
+        passwordCheck = "password";
         name = "name";
         nickname = "nickname";
 
         // product
-        productname = "당근";
-        productinfo = "신선한 당근";
-        productprice = 5000;
-        leftproduct = 100;
+        productName = "당근";
+        productInfo = "신선한 당근";
+        productPrice = 5000;
+        leftProduct = 100;
         productEnum = ProductEnum.SELLING;
     }
 
@@ -57,16 +57,16 @@ public class CartProductTest {
         JoinRequestDto userRequestDto = new JoinRequestDto(
                 username,
                 password,
-                passwordcheck,
+                passwordCheck,
                 name,
                 nickname
         );
 
         CreateProduct productRequestDto = new CreateProduct(
-                productname,
-                productinfo,
-                productprice,
-                leftproduct
+                productName,
+                productInfo,
+                productPrice,
+                leftProduct
         );
 
         //when
@@ -79,10 +79,10 @@ public class CartProductTest {
                 .build();
 
         Product product = Product.builder()
-                .productname(productRequestDto.getProductname())
-                .productinfo(productRequestDto.getProductinfo())
-                .productprice(productRequestDto.getProductprice())
-                .leftproduct(productRequestDto.getLeftproduct())
+                .productName(productRequestDto.getProductName())
+                .productInfo(productRequestDto.getProductInfo())
+                .productPrice(productRequestDto.getProductPrice())
+                .leftProduct(productRequestDto.getLeftProduct())
                 .productEnum(productEnum)
                 .build();
 
@@ -93,7 +93,7 @@ public class CartProductTest {
         CartProduct cartProduct = CartProduct.builder()
                 .cart(cart)
                 .product(product)
-                .productcount(5)
+                .productCount(5)
                 .build();
 
         //then
@@ -102,12 +102,12 @@ public class CartProductTest {
         assertEquals(name, cartProduct.getCart().getUser().getName());
         assertEquals(nickname, cartProduct.getCart().getUser().getNickname());
         assertEquals(UserRoleEnum.USER, cartProduct.getCart().getUser().getRole());
-        assertEquals(productname, cartProduct.getProduct().getProductname());
-        assertEquals(productinfo, cartProduct.getProduct().getProductinfo());
-        assertEquals(productprice, cartProduct.getProduct().getProductprice());
-        assertEquals(leftproduct, cartProduct.getProduct().getLeftproduct());
+        assertEquals(productName, cartProduct.getProduct().getProductName());
+        assertEquals(productInfo, cartProduct.getProduct().getProductInfo());
+        assertEquals(productPrice, cartProduct.getProduct().getProductPrice());
+        assertEquals(leftProduct, cartProduct.getProduct().getLeftProduct());
         assertEquals(productEnum, cartProduct.getProduct().getProductEnum());
-        assertEquals(5, cartProduct.getProductcount());
+        assertEquals(5, cartProduct.getProductCount());
     }
 
 

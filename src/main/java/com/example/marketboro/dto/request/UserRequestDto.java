@@ -33,6 +33,7 @@ public class UserRequestDto {
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class LoginRequestDto {
 
         @NotEmpty(message = "아이디를 입력해주세요.")

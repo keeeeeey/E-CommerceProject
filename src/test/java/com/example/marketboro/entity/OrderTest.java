@@ -17,7 +17,7 @@ public class OrderTest {
 
     private String username;
     private String password;
-    private String passwordcheck;
+    private String passwordCheck;
     private String name;
     private String nickname;
 
@@ -25,7 +25,7 @@ public class OrderTest {
     public void setUp() {
         username = "username@username.com";
         password = "password";
-        passwordcheck = "password";
+        passwordCheck = "password";
         name = "name";
         nickname = "nickname";
     }
@@ -38,7 +38,7 @@ public class OrderTest {
         UserRequestDto.JoinRequestDto requestDto = new UserRequestDto.JoinRequestDto(
                 username,
                 password,
-                passwordcheck,
+                passwordCheck,
                 name,
                 nickname
         );

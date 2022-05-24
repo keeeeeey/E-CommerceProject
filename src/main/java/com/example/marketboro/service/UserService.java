@@ -29,7 +29,7 @@ public class UserService {
 
     //회원가입 확인
     @Transactional
-    public Long join(JoinRequestDto requestDto) {
+    public User join(JoinRequestDto requestDto) {
         // 회원 ID 중복 확인
         String username = requestDto.getUsername();
         Optional<User> findUser = userRepository.findByUsername(username);
@@ -71,7 +71,7 @@ public class UserService {
 
         cartRepository.save(cart);
 
-        return user.getId();
+        return user;
     }
 
     //로그인

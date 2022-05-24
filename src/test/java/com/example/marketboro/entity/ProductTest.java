@@ -21,18 +21,18 @@ public class ProductTest {
     @Autowired
     EntityManager em;
 
-    private String productname;
-    private String productinfo;
-    private int productprice;
-    private int leftproduct;
+    private String productName;
+    private String productInfo;
+    private int productPrice;
+    private int leftProduct;
     private ProductEnum productEnum;
 
     @BeforeEach
     public void setUp() {
-        productname = "당근";
-        productinfo = "신선한 당근";
-        productprice = 5000;
-        leftproduct = 100;
+        productName = "당근";
+        productInfo = "신선한 당근";
+        productPrice = 5000;
+        leftProduct = 100;
         productEnum = ProductEnum.SELLING;
     }
 
@@ -42,26 +42,26 @@ public class ProductTest {
 
         // given
         CreateProduct requestDto = new CreateProduct(
-                productname,
-                productinfo,
-                productprice,
-                leftproduct
+                productName,
+                productInfo,
+                productPrice,
+                leftProduct
         );
 
         //when
         Product product = Product.builder()
-                .productname(requestDto.getProductname())
-                .productinfo(requestDto.getProductinfo())
-                .productprice(requestDto.getProductprice())
-                .leftproduct(requestDto.getLeftproduct())
+                .productName(requestDto.getProductName())
+                .productInfo(requestDto.getProductInfo())
+                .productPrice(requestDto.getProductPrice())
+                .leftProduct(requestDto.getLeftProduct())
                 .productEnum(productEnum)
                 .build();
 
         //then
-        assertEquals(productname, product.getProductname());
-        assertEquals(productinfo, product.getProductinfo());
-        assertEquals(productprice, product.getProductprice());
-        assertEquals(leftproduct, product.getLeftproduct());
+        assertEquals(productName, product.getProductName());
+        assertEquals(productInfo, product.getProductInfo());
+        assertEquals(productPrice, product.getProductPrice());
+        assertEquals(leftProduct, product.getLeftProduct());
         assertEquals(productEnum, product.getProductEnum());
     }
 }

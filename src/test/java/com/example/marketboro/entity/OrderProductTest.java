@@ -19,15 +19,15 @@ public class OrderProductTest {
     // user
     private String username;
     private String password;
-    private String passwordcheck;
+    private String passwordCheck;
     private String name;
     private String nickname;
 
     // product
-    private String productname;
-    private String productinfo;
-    private int productprice;
-    private int leftproduct;
+    private String productName;
+    private String productInfo;
+    private int productPrice;
+    private int leftProduct;
     private ProductEnum productEnum;
 
     @BeforeEach
@@ -35,15 +35,15 @@ public class OrderProductTest {
         // user
         username = "username@username.com";
         password = "password";
-        passwordcheck = "password";
+        passwordCheck = "password";
         name = "name";
         nickname = "nickname";
 
         // product
-        productname = "당근";
-        productinfo = "신선한 당근";
-        productprice = 5000;
-        leftproduct = 100;
+        productName = "당근";
+        productInfo = "신선한 당근";
+        productPrice = 5000;
+        leftProduct = 100;
         productEnum = ProductEnum.SELLING;
     }
 
@@ -55,16 +55,16 @@ public class OrderProductTest {
         UserRequestDto.JoinRequestDto userRequestDto = new UserRequestDto.JoinRequestDto(
                 username,
                 password,
-                passwordcheck,
+                passwordCheck,
                 name,
                 nickname
         );
 
         ProductRequestDto.CreateProduct productRequestDto = new ProductRequestDto.CreateProduct(
-                productname,
-                productinfo,
-                productprice,
-                leftproduct
+                productName,
+                productInfo,
+                productPrice,
+                leftProduct
         );
 
         //when
@@ -77,10 +77,10 @@ public class OrderProductTest {
                 .build();
 
         Product product = Product.builder()
-                .productname(productRequestDto.getProductname())
-                .productinfo(productRequestDto.getProductinfo())
-                .productprice(productRequestDto.getProductprice())
-                .leftproduct(productRequestDto.getLeftproduct())
+                .productName(productRequestDto.getProductName())
+                .productInfo(productRequestDto.getProductInfo())
+                .productPrice(productRequestDto.getProductPrice())
+                .leftProduct(productRequestDto.getLeftProduct())
                 .productEnum(productEnum)
                 .build();
 
@@ -91,7 +91,7 @@ public class OrderProductTest {
         OrderProduct orderProduct = OrderProduct.builder()
                 .order(order)
                 .product(product)
-                .productcount(5)
+                .productCount(5)
                 .build();
 
         //then
@@ -100,11 +100,11 @@ public class OrderProductTest {
         assertEquals(name, orderProduct.getOrder().getUser().getName());
         assertEquals(nickname, orderProduct.getOrder().getUser().getNickname());
         assertEquals(UserRoleEnum.USER, orderProduct.getOrder().getUser().getRole());
-        assertEquals(productname, orderProduct.getProduct().getProductname());
-        assertEquals(productinfo, orderProduct.getProduct().getProductinfo());
-        assertEquals(productprice, orderProduct.getProduct().getProductprice());
-        assertEquals(leftproduct, orderProduct.getProduct().getLeftproduct());
+        assertEquals(productName, orderProduct.getProduct().getProductName());
+        assertEquals(productInfo, orderProduct.getProduct().getProductInfo());
+        assertEquals(productPrice, orderProduct.getProduct().getProductPrice());
+        assertEquals(leftProduct, orderProduct.getProduct().getLeftProduct());
         assertEquals(productEnum, orderProduct.getProduct().getProductEnum());
-        assertEquals(5, orderProduct.getProductcount());
+        assertEquals(5, orderProduct.getProductCount());
     }
 }

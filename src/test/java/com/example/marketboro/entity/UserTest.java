@@ -23,7 +23,7 @@ public class UserTest {
 
     private String username;
     private String password;
-    private String passwordcheck;
+    private String passwordCheck;
     private String name;
     private String nickname;
 
@@ -31,7 +31,7 @@ public class UserTest {
     public void setUp() {
         username = "username@username.com";
         password = "password";
-        passwordcheck = "password";
+        passwordCheck = "password";
         name = "name";
         nickname = "nickname";
     }
@@ -44,7 +44,7 @@ public class UserTest {
         JoinRequestDto requestDto = new JoinRequestDto(
                 username,
                 password,
-                passwordcheck,
+                passwordCheck,
                 name,
                 nickname
         );
