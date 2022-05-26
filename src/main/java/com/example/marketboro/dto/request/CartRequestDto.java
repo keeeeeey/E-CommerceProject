@@ -1,6 +1,7 @@
 package com.example.marketboro.dto.request;
 
 import com.example.marketboro.dto.request.CommonDto.IdDto;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ public class CartRequestDto {
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class AddCartDto {
         private Long productId;
         private int productCount;
@@ -17,6 +19,7 @@ public class CartRequestDto {
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class UpdateCartDto {
         private Long cartProductId;
         private int productCount;
@@ -24,6 +27,7 @@ public class CartRequestDto {
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class DeleteCartDto {
         private List<IdDto> cartProductIdDtoList;
     }

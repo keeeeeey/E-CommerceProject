@@ -31,7 +31,7 @@ public class CartService {
     private final CartProductRepository cartProductRepository;
 
     @Transactional
-    public Long addCart(Long userId, AddCartDto requestDto) {
+    public CartProduct addCart(Long userId, AddCartDto requestDto) {
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR));
         Product product = productRepository.findById(requestDto.getProductId())
@@ -45,18 +45,18 @@ public class CartService {
                 .productCount(requestDto.getProductCount())
                 .build();
         CartProduct saveCartProduct = cartProductRepository.save(cartProduct);
-        return saveCartProduct.getId();
+        return saveCartProduct;
     }
 
     @Transactional
-    public Long updateCart(UpdateCartDto requestDto) {
+    public CartProduct updateCart(UpdateCartDto requestDto) {
         CartProduct cartProduct = cartProductRepository.findById(requestDto.getCartProductId())
                 .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_EXISTENCECART_ERROR));
 
         productCountValidation(cartProduct.getProduct(), requestDto.getProductCount());
 
         cartProduct.updateCartProduct(requestDto);
-        return cartProduct.getId();
+        return cartProduct;
     }
 
     @Transactional
