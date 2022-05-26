@@ -31,7 +31,7 @@ public class CartService {
     private final CartProductRepository cartProductRepository;
 
     @Transactional
-    public CartProduct addCart(Long userId, AddCartDto requestDto) {
+    public CartProductResponseDto addCart(Long userId, AddCartDto requestDto) {
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_AUTHENTICATION_ERROR));
         Product product = productRepository.findById(requestDto.getProductId())
@@ -45,18 +45,32 @@ public class CartService {
                 .productCount(requestDto.getProductCount())
                 .build();
         CartProduct saveCartProduct = cartProductRepository.save(cartProduct);
-        return saveCartProduct;
+        return CartProductResponseDto.builder()
+                .cartProductId(saveCartProduct.getId())
+                .productId(product.getId())
+                .productName(product.getProductName())
+                .productInfo(product.getProductInfo())
+                .productPrice(product.getProductPrice())
+                .productCount(saveCartProduct.getProductCount())
+                .build();
     }
 
     @Transactional
-    public CartProduct updateCart(UpdateCartDto requestDto) {
+    public CartProductResponseDto updateCart(UpdateCartDto requestDto) {
         CartProduct cartProduct = cartProductRepository.findById(requestDto.getCartProductId())
                 .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_EXISTENCECART_ERROR));
 
         productCountValidation(cartProduct.getProduct(), requestDto.getProductCount());
 
         cartProduct.updateCartProduct(requestDto);
-        return cartProduct;
+        return CartProductResponseDto.builder()
+                .cartProductId(cartProduct.getId())
+                .productId(cartProduct.getProduct().getId())
+                .productName(cartProduct.getProduct().getProductName())
+                .productInfo(cartProduct.getProduct().getProductInfo())
+                .productPrice(cartProduct.getProduct().getProductPrice())
+                .productCount(cartProduct.getProductCount())
+                .build();
     }
 
     @Transactional

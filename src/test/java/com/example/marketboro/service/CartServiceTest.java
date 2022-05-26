@@ -2,6 +2,7 @@ package com.example.marketboro.service;
 
 import com.example.marketboro.dto.request.CartRequestDto.AddCartDto;
 import com.example.marketboro.dto.request.CartRequestDto.UpdateCartDto;
+import com.example.marketboro.dto.response.CartProductResponseDto;
 import com.example.marketboro.entity.*;
 import com.example.marketboro.repository.ProductRepository;
 import com.example.marketboro.repository.cart.CartProductRepository;
@@ -76,11 +77,10 @@ public class CartServiceTest {
                 .thenReturn(cartProduct);
 
         // when
-        CartProduct saveCartProduct = cartService.addCart(userId, requestDto);
+        CartProductResponseDto saveCartProduct = cartService.addCart(userId, requestDto);
 
         // then
-        assertEquals(cartProduct.getProduct().getProductName(), saveCartProduct.getProduct().getProductName());
-        assertEquals(cartProduct.getCart().getUser().getId(), saveCartProduct.getCart().getUser().getId());
+        assertEquals(cartProduct.getProduct().getProductName(), saveCartProduct.getProductName());
         assertEquals(cartProduct.getProductCount(), saveCartProduct.getProductCount());
     }
 
@@ -124,7 +124,7 @@ public class CartServiceTest {
                 .thenReturn(Optional.of(cartProduct));
 
         // when
-        CartProduct saveCartProduct = cartService.updateCart(requestDto);
+        CartProductResponseDto saveCartProduct = cartService.updateCart(requestDto);
 
         // then
         assertEquals(10, saveCartProduct.getProductCount());

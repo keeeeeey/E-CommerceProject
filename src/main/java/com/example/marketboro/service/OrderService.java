@@ -35,7 +35,7 @@ public class OrderService {
     private final OrderProductRepository orderProductRepository;
 
     @Transactional
-    public List<Long> createOrder(Long userId, CreateOrderDto requestDto, HttpServletRequest request) {
+    public List<OrderProductResponseDto> createOrder(Long userId, CreateOrderDto requestDto, HttpServletRequest request) {
         HttpSession httpSession = request.getSession();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_USER_ERROR));
@@ -44,7 +44,50 @@ public class OrderService {
                 .build();
         Order saveOrder = orderRepository.save(order);
         List<OrderDto> orderDtoList = requestDto.getOrderList();
-        List<Long> orderProductIdList = new ArrayList<>();
+        List<OrderProductResponseDto> responseDtoList = setOrderProductList(saveOrder, orderDtoList);
+        httpSession.setAttribute("orderId", order.getId());
+        return responseDtoList;
+    }
+
+    @Transactional
+    public List<OrderProductResponseDto> cancelOrder(CancelOrderDto requestDto) {
+        List<IdDto> cancelOrderList = requestDto.getCancelOrderList();
+        List<OrderProductResponseDto> responseDtoList = setCancelOrderProductList(cancelOrderList);
+        return responseDtoList;
+    }
+
+    @Transactional
+    public OrderProductResponseDto finishDelivery(Long orderProductId) {
+        OrderProduct orderProduct = orderProductRepository.findById(orderProductId)
+                .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_ORDERED_ERROR));
+        orderProduct.changeOrderStatus(OrderStatus.배송완료);
+        log.info(orderProduct.getId() + "번 주문 배송 완료");
+        return OrderProductResponseDto.builder()
+                .orderProductId(orderProduct.getId())
+                .productId(orderProduct.getProduct().getId())
+                .productName(orderProduct.getProduct().getProductName())
+                .productInfo(orderProduct.getProduct().getProductInfo())
+                .productPrice(orderProduct.getProduct().getProductPrice())
+                .productCount(orderProduct.getProductCount())
+                .orderStatus(orderProduct.getOrderStatus())
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public List<OrderProductResponseDto> getAllOrder(Long userId) {
+        List<Order> orderList = orderRepository.findAllByUserId(userId);
+        List<OrderProductResponseDto> responseDto = new ArrayList<>();
+        orderList.forEach((order) -> {
+            List<OrderProductResponseDto> findOrderProductList = orderProductRepository.findOrderProductByOrderId(order.getId());
+            findOrderProductList.forEach((findOrderProduct) -> {
+                responseDto.add(findOrderProduct);
+            });
+        });
+        return responseDto;
+    }
+
+    private List<OrderProductResponseDto> setOrderProductList(Order saveOrder, List<OrderDto> orderDtoList) {
+        List<OrderProductResponseDto> responseDtoList = new ArrayList<>();
         orderDtoList.forEach((orderDto) -> {
             Product product = productRepository.findById(orderDto.getProductId())
                     .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_EXISTENCE_ERROR));
@@ -65,17 +108,24 @@ public class OrderService {
 
             cartProductRepository.deleteById(orderDto.getCartProductId());
 
-            orderProductIdList.add(saveOrderProduct.getId());
+            OrderProductResponseDto responseDto = OrderProductResponseDto.builder()
+                    .orderProductId(saveOrderProduct.getId())
+                    .productId(product.getId())
+                    .productName(product.getProductName())
+                    .productInfo(product.getProductInfo())
+                    .productPrice(product.getProductPrice())
+                    .productCount(saveOrderProduct.getProductCount())
+                    .orderStatus(saveOrderProduct.getOrderStatus())
+                    .build();
+
+            responseDtoList.add(responseDto);
             log.info(saveOrderProduct.getId() + "번 상품 주문 접수");
         });
-        httpSession.setAttribute("orderId", order.getId());
-        return orderProductIdList;
+        return responseDtoList;
     }
 
-    @Transactional
-    public List<Long> cancelOrder(CancelOrderDto requestDto) {
-        List<Long> cancelOrderProductIdList = new ArrayList<>();
-        List<IdDto> cancelOrderList = requestDto.getCancelOrderList();
+    private List<OrderProductResponseDto> setCancelOrderProductList(List<IdDto> cancelOrderList) {
+        List<OrderProductResponseDto> responseDtoList = new ArrayList<>();
         cancelOrderList.forEach((cancelOrder) -> {
             OrderProduct orderProduct = orderProductRepository.findById(cancelOrder.getId())
                     .orElseThrow(() -> new ErrorCustomException(ErrorCode.ALREADY_CANCELORDER_ERROR));
@@ -89,32 +139,20 @@ public class OrderService {
             orderProduct.changeOrderStatus(OrderStatus.주문취소);
             orderProduct.getProduct().plusLeftProduct(orderProduct.getProductCount());
 
-            cancelOrderProductIdList.add(orderProduct.getId());
+            OrderProductResponseDto responseDto = OrderProductResponseDto.builder()
+                    .orderProductId(orderProduct.getId())
+                    .productId(orderProduct.getProduct().getId())
+                    .productName(orderProduct.getProduct().getProductName())
+                    .productInfo(orderProduct.getProduct().getProductInfo())
+                    .productPrice(orderProduct.getProduct().getProductPrice())
+                    .productCount(orderProduct.getProductCount())
+                    .orderStatus(orderProduct.getOrderStatus())
+                    .build();
+
+            responseDtoList.add(responseDto);
             log.info(orderProduct.getId() + "번 주문 취소");
         });
-        return cancelOrderProductIdList;
-    }
-
-    @Transactional
-    public Long finishDelivery(Long orderProductId) {
-        OrderProduct orderProduct = orderProductRepository.findById(orderProductId)
-                .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_ORDERED_ERROR));
-        orderProduct.changeOrderStatus(OrderStatus.배송완료);
-        log.info(orderProduct.getId() + "번 주문 배송 완료");
-        return orderProduct.getId();
-    }
-
-    @Transactional(readOnly = true)
-    public List<OrderProductResponseDto> getAllOrder(Long userId) {
-        List<Order> orderList = orderRepository.findAllByUserId(userId);
-        List<OrderProductResponseDto> responseDto = new ArrayList<>();
-        orderList.forEach((order) -> {
-            List<OrderProductResponseDto> findOrderProductList = orderProductRepository.findOrderProductByOrderId(order.getId());
-            findOrderProductList.forEach((findOrderProduct) -> {
-                responseDto.add(findOrderProduct);
-            });
-        });
-        return responseDto;
+        return responseDtoList;
     }
 
 }
