@@ -24,7 +24,7 @@ public class ProductService {
     private final CartProductRepository cartProductRepository;
 
     @Transactional
-    public Long createProduct(CreateProduct requestDto) {
+    public Product createProduct(CreateProduct requestDto) {
         Product product = Product.builder()
                 .productName(requestDto.getProductName())
                 .productInfo(requestDto.getProductInfo())
@@ -32,16 +32,16 @@ public class ProductService {
                 .leftProduct(requestDto.getLeftProduct())
                 .productEnum(ProductEnum.SELLING)
                 .build();
-        Product saveproduct = productRepository.save(product);
-        return saveproduct.getId();
+        Product saveProduct = productRepository.save(product);
+        return saveProduct;
     }
 
     @Transactional
-    public Long updateProduct(UpdateProduct requestDto, Long productId) {
+    public Product updateProduct(UpdateProduct requestDto, Long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ErrorCustomException(ErrorCode.NO_EXISTENCE_ERROR));
         product.updateProduct(requestDto);
-        return product.getId();
+        return product;
     }
 
     @Transactional
