@@ -15,6 +15,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -28,8 +29,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
-    @Mock
-    PasswordEncoder passwordEncoder;
+    @Spy
+    private PasswordEncoder passwordEncoder = new MockPasswordEncoder();
 
     @Mock
     UserRepository userRepository;
@@ -52,7 +53,8 @@ public class UserServiceTest {
                 "1234",
                 "1234",
                 "김기윤",
-                "key");
+                "key"
+        );
 
         UserService userService = new UserService(
                 passwordEncoder,
@@ -170,35 +172,85 @@ public class UserServiceTest {
         assertEquals("비밀번호가 일치하지 않습니다.", exception.getMessage());
     }
 
-//    @Test
-//    @DisplayName("로그인 정상케이스")
-//    public void loginUser() {
-//        // given
-//        LoginRequestDto requestDto = new LoginRequestDto("sseioul@naver.com", "1234");
-//
-//        User user = User.builder()
-//                .username("sseioul@naver.com")
-//                .password("1234")
-//                .name("김기윤")
-//                .nickname("key")
-//                .role(UserRoleEnum.USER)
-//                .build();
-//
-//        UserService userService = new UserService(
-//                passwordEncoder,
-//                userRepository,
-//                jwtTokenProvider,
-//                cartRepository,
-//                redisService);
-//        when(userRepository.findByUsername(any()))
-//                .thenReturn(Optional.of(user));
-//
-//        // when
-//        LoginResponseDto responseDto = userService.login(requestDto);
-//
-//        // then
-//        assertEquals(user.getUsername(), responseDto.getUsername());
-//
-//    }
+    @Test
+    @DisplayName("로그인 정상케이스")
+    public void loginUser() {
+        // given
+        String rawPassword = "1234";
+        LoginRequestDto requestDto = new LoginRequestDto("sseioul@naver.com", rawPassword);
+
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+
+        User user = User.builder()
+                .username("sseioul@naver.com")
+                .password(encodedPassword)
+                .name("김기윤")
+                .nickname("key")
+                .role(UserRoleEnum.USER)
+                .build();
+
+        UserService userService = new UserService(
+                passwordEncoder,
+                userRepository,
+                jwtTokenProvider,
+                cartRepository,
+                redisService);
+        when(userRepository.findByUsername(any()))
+                .thenReturn(Optional.of(user));
+
+        // when
+        LoginResponseDto responseDto = userService.login(requestDto);
+
+        // then
+        assertEquals(user.getUsername(), responseDto.getUsername());
+
+    }
+
+    @Test
+    @DisplayName("로그인 비밀번호 불일치")
+    public void loginFailed() {
+        // given
+        LoginRequestDto requestDto = new LoginRequestDto("sseioul@naver.com", "12345");
+
+        String rawPassword = "1234";
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+
+        User user = User.builder()
+                .username("sseioul@naver.com")
+                .password(encodedPassword)
+                .name("김기윤")
+                .nickname("key")
+                .role(UserRoleEnum.USER)
+                .build();
+
+        UserService userService = new UserService(
+                passwordEncoder,
+                userRepository,
+                jwtTokenProvider,
+                cartRepository,
+                redisService);
+        when(userRepository.findByUsername(any()))
+                .thenReturn(Optional.of(user));
+
+        // when
+        Exception exception = assertThrows(ErrorCustomException.class, () -> {
+            userService.login(requestDto);
+        });
+
+        // then
+        assertEquals("비밀번호가 일치하지 않습니다.", exception.getMessage());
+    }
+
+    private class MockPasswordEncoder implements PasswordEncoder {
+        @Override
+        public String encode(CharSequence rawPassword) {
+            return new StringBuilder(rawPassword).reverse().toString();
+        }
+
+        @Override
+        public boolean matches(CharSequence rawPassword, String encodedPassword) {
+            return encode(rawPassword).equals(encodedPassword);
+        }
+    }
 
 }
