@@ -28,39 +28,13 @@ public class ProductServiceTest {
     @Mock
     CartProductRepository cartProductRepository;
 
-    private String productName;
-    private String productInfo;
-    private int productPrice;
-    private int leftProduct;
-    private ProductEnum productEnum;
-
-    @BeforeEach
-    public void setUp() {
-        productName = "당근";
-        productInfo = "신선한 당근";
-        productPrice = 5000;
-        leftProduct = 100;
-        productEnum = ProductEnum.SELLING;
-    }
-
     @Test
     @DisplayName("product 생성")
-    public void createProduct() {
+    public void createProductTest() {
         // given
-        CreateProduct requestDto = new CreateProduct(
-                productName,
-                productInfo,
-                productPrice,
-                leftProduct
-        );
+        CreateProduct requestDto = createProduct();
 
-        Product product = Product.builder()
-                .productName(requestDto.getProductName())
-                .productInfo(requestDto.getProductInfo())
-                .productPrice(requestDto.getProductPrice())
-                .leftProduct(requestDto.getLeftProduct())
-                .productEnum(productEnum)
-                .build();
+        Product product = product();
 
         ProductService productService = new ProductService(productRepository, cartProductRepository);
         when(productRepository.save(any()))
@@ -80,25 +54,13 @@ public class ProductServiceTest {
 
     @Test
     @DisplayName("product 업데이트")
-    public void updateProduct() {
+    public void updateProductTest() {
         // given
         Long productId = 100L;
 
-        UpdateProduct requestDto = new UpdateProduct(
-                "배추",
-                "신선한 배추",
-                10000,
-                50,
-                "SELLING"
-        );
+        UpdateProduct requestDto = updateProduct();
 
-        Product product = Product.builder()
-                .productName(productName)
-                .productInfo(productInfo)
-                .productPrice(productPrice)
-                .leftProduct(leftProduct)
-                .productEnum(productEnum)
-                .build();
+        Product product = product();
 
         ProductService productService = new ProductService(productRepository, cartProductRepository);
         when(productRepository.findById(productId))
@@ -112,6 +74,35 @@ public class ProductServiceTest {
         assertEquals(requestDto.getProductInfo(), updateProduct.getProductInfo());
         assertEquals(requestDto.getProductPrice(), updateProduct.getProductPrice());
         assertEquals(requestDto.getLeftProduct(), updateProduct.getLeftProduct());
+    }
+
+    private Product product() {
+        return Product.builder()
+                .productName("당근")
+                .productInfo("신선한 당근")
+                .productPrice(5000)
+                .leftProduct(100)
+                .productEnum(ProductEnum.SELLING)
+                .build();
+    }
+
+    private CreateProduct createProduct() {
+        return new CreateProduct(
+                "당근",
+                "신선한 당근",
+                5000,
+                100
+        );
+    }
+
+    private UpdateProduct updateProduct() {
+        return new UpdateProduct(
+                "배추",
+                "신선한 배추",
+                10000,
+                50,
+                "SELLING"
+        );
     }
 
 }

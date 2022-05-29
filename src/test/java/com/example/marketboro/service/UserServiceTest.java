@@ -48,20 +48,9 @@ public class UserServiceTest {
     @DisplayName("회원가입 정상케이스")
     public void joinUser() {
         // given
-        JoinRequestDto requestDto = new JoinRequestDto(
-                "sseioul@naver.com",
-                "1234",
-                "1234",
-                "김기윤",
-                "key"
-        );
+        JoinRequestDto requestDto = joinRequestDto();
 
-        UserService userService = new UserService(
-                passwordEncoder,
-                userRepository,
-                jwtTokenProvider,
-                cartRepository,
-                redisService);
+        UserService userService = userService();
 
         // when
         User joinUser = userService.join(requestDto);
@@ -75,27 +64,11 @@ public class UserServiceTest {
     @DisplayName("회원가입 아이디 중복")
     public void joinUserFailedUsername() {
         // given
-        JoinRequestDto requestDto = new JoinRequestDto(
-                "sseioul@naver.com",
-                "1234",
-                "1234",
-                "김기윤",
-                "key");
+        JoinRequestDto requestDto = joinRequestDto();
 
-        User user = User.builder()
-                .username("sseioul@naver.com")
-                .password("1234")
-                .name("test")
-                .nickname("test")
-                .role(UserRoleEnum.USER)
-                .build();
+        User user = user();
 
-        UserService userService = new UserService(
-                passwordEncoder,
-                userRepository,
-                jwtTokenProvider,
-                cartRepository,
-                redisService);
+        UserService userService = userService();
         when(userRepository.findByUsername(any()))
                 .thenReturn(Optional.of(user));
 
@@ -112,27 +85,11 @@ public class UserServiceTest {
     @DisplayName("회원가입 닉네임 중복")
     public void joinUserFailedNickname() {
         // given
-        JoinRequestDto requestDto = new JoinRequestDto(
-                "sseioul@naver.com",
-                "1234",
-                "1234",
-                "김기윤",
-                "key");
+        JoinRequestDto requestDto = joinRequestDto();
 
-        User user = User.builder()
-                .username("test@test.com")
-                .password("1234")
-                .name("test")
-                .nickname("key")
-                .role(UserRoleEnum.USER)
-                .build();
+        User user = user();
 
-        UserService userService = new UserService(
-                passwordEncoder,
-                userRepository,
-                jwtTokenProvider,
-                cartRepository,
-                redisService);
+        UserService userService = userService();
         when(userRepository.findByNickname(any()))
                 .thenReturn(Optional.of(user));
 
@@ -156,12 +113,7 @@ public class UserServiceTest {
                 "김기윤",
                 "key");
 
-        UserService userService = new UserService(
-                passwordEncoder,
-                userRepository,
-                jwtTokenProvider,
-                cartRepository,
-                redisService);
+        UserService userService = userService();
 
         // when
         Exception exception = assertThrows(ErrorCustomException.class, () -> {
@@ -189,12 +141,7 @@ public class UserServiceTest {
                 .role(UserRoleEnum.USER)
                 .build();
 
-        UserService userService = new UserService(
-                passwordEncoder,
-                userRepository,
-                jwtTokenProvider,
-                cartRepository,
-                redisService);
+        UserService userService = userService();
         when(userRepository.findByUsername(any()))
                 .thenReturn(Optional.of(user));
 
@@ -223,12 +170,7 @@ public class UserServiceTest {
                 .role(UserRoleEnum.USER)
                 .build();
 
-        UserService userService = new UserService(
-                passwordEncoder,
-                userRepository,
-                jwtTokenProvider,
-                cartRepository,
-                redisService);
+        UserService userService = userService();
         when(userRepository.findByUsername(any()))
                 .thenReturn(Optional.of(user));
 
@@ -239,6 +181,37 @@ public class UserServiceTest {
 
         // then
         assertEquals("비밀번호가 일치하지 않습니다.", exception.getMessage());
+    }
+
+    private UserService userService() {
+        return new UserService(
+                passwordEncoder,
+                userRepository,
+                jwtTokenProvider,
+                cartRepository,
+                redisService
+        );
+    }
+
+    private User user() {
+        return User.builder()
+                .userId(1L)
+                .username("sseioul@naver.com")
+                .password("1234")
+                .name("김기윤")
+                .nickname("key")
+                .role(UserRoleEnum.USER)
+                .build();
+    }
+
+    private JoinRequestDto joinRequestDto() {
+        return new JoinRequestDto(
+                "sseioul@naver.com",
+                "1234",
+                "1234",
+                "김기윤",
+                "key"
+        );
     }
 
     private class MockPasswordEncoder implements PasswordEncoder {

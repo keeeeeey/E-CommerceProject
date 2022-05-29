@@ -56,25 +56,13 @@ public class OrderServiceTest {
         Long productId = 100L;
         Long cartProductId = 100L;
 
-        User user = User.builder()
-                .username("sseioul@naver.com")
-                .password("1234")
-                .name("김기윤")
-                .nickname("key")
-                .role(UserRoleEnum.USER)
-                .build();
+        User user = user();
 
         Order order = Order.builder()
                 .user(user)
                 .build();
 
-        Product product = Product.builder()
-                .productName("당근")
-                .productInfo("신선한 당근")
-                .productPrice(5000)
-                .leftProduct(100)
-                .productEnum(ProductEnum.SELLING)
-                .build();
+        Product product = product();
 
         OrderProduct orderProduct = OrderProduct.builder()
                 .order(order)
@@ -89,13 +77,7 @@ public class OrderServiceTest {
 
         CreateOrderDto requestDtoList = new CreateOrderDto(requestDto);
 
-        OrderService orderService = new OrderService(
-                userRepository,
-                productRepository,
-                cartProductRepository,
-                orderRepository,
-                orderProductRepository
-        );
+        OrderService orderService = orderService();
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(orderRepository.save(any())).thenReturn(order);
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
@@ -114,25 +96,13 @@ public class OrderServiceTest {
         // given
         Long orderProductId = 100L;
 
-        User user = User.builder()
-                .username("sseioul@naver.com")
-                .password("1234")
-                .name("김기윤")
-                .nickname("key")
-                .role(UserRoleEnum.USER)
-                .build();
+        User user = user();
 
         Order order = Order.builder()
                 .user(user)
                 .build();
 
-        Product product = Product.builder()
-                .productName("당근")
-                .productInfo("신선한 당근")
-                .productPrice(5000)
-                .leftProduct(100)
-                .productEnum(ProductEnum.SELLING)
-                .build();
+        Product product = product();
 
         OrderProduct orderProduct = OrderProduct.builder()
                 .order(order)
@@ -147,13 +117,7 @@ public class OrderServiceTest {
 
         CancelOrderDto requestDtoList = new CancelOrderDto(requestDto);
 
-        OrderService orderService = new OrderService(
-                userRepository,
-                productRepository,
-                cartProductRepository,
-                orderRepository,
-                orderProductRepository
-        );
+        OrderService orderService = orderService();
         when(orderProductRepository.findById(orderProductId))
                 .thenReturn(Optional.of(orderProduct));
 
@@ -170,25 +134,13 @@ public class OrderServiceTest {
         // given
         Long orderProductId = 100L;
 
-        User user = User.builder()
-                .username("sseioul@naver.com")
-                .password("1234")
-                .name("김기윤")
-                .nickname("key")
-                .role(UserRoleEnum.USER)
-                .build();
+        User user = user();
 
         Order order = Order.builder()
                 .user(user)
                 .build();
 
-        Product product = Product.builder()
-                .productName("당근")
-                .productInfo("신선한 당근")
-                .productPrice(5000)
-                .leftProduct(100)
-                .productEnum(ProductEnum.SELLING)
-                .build();
+        Product product = product();
 
         OrderProduct orderProduct = OrderProduct.builder()
                 .order(order)
@@ -197,13 +149,7 @@ public class OrderServiceTest {
                 .orderStatus(OrderStatus.주문접수)
                 .build();
 
-        OrderService orderService = new OrderService(
-                userRepository,
-                productRepository,
-                cartProductRepository,
-                orderRepository,
-                orderProductRepository
-        );
+        OrderService orderService = orderService();
         when(orderProductRepository.findById(orderProductId))
                 .thenReturn(Optional.of(orderProduct));
 
@@ -212,5 +158,36 @@ public class OrderServiceTest {
 
         // then
         assertEquals(OrderStatus.배송완료, responseDto.getOrderStatus());
+    }
+
+    private User user() {
+        return User.builder()
+                .userId(1L)
+                .username("sseioul@naver.com")
+                .password("1234")
+                .name("김기윤")
+                .nickname("key")
+                .role(UserRoleEnum.USER)
+                .build();
+    }
+
+    private Product product() {
+        return Product.builder()
+                .productName("당근")
+                .productInfo("신선한 당근")
+                .productPrice(5000)
+                .leftProduct(100)
+                .productEnum(ProductEnum.SELLING)
+                .build();
+    }
+
+    private OrderService orderService() {
+        return new OrderService(
+                userRepository,
+                productRepository,
+                cartProductRepository,
+                orderRepository,
+                orderProductRepository
+        );
     }
 }

@@ -40,25 +40,13 @@ public class CartServiceTest {
         Long userId = 100L;
         Long productId = 100L;
 
-        User user = User.builder()
-                .username("sseioul@naver.com")
-                .password("1234")
-                .name("김기윤")
-                .nickname("key")
-                .role(UserRoleEnum.USER)
-                .build();
+        User user = user();
 
         Cart cart = Cart.builder()
                 .user(user)
                 .build();
 
-        Product product = Product.builder()
-                .productName("당근")
-                .productInfo("신선한 당근")
-                .productPrice(5000)
-                .leftProduct(100)
-                .productEnum(ProductEnum.SELLING)
-                .build();
+        Product product = product();
 
         CartProduct cartProduct = CartProduct.builder()
                 .product(product)
@@ -68,7 +56,7 @@ public class CartServiceTest {
 
         AddCartDto requestDto = new AddCartDto(productId, 5);
 
-        CartService cartService = new CartService(cartRepository, productRepository, cartProductRepository);
+        CartService cartService = cartService();
         when(cartRepository.findByUserId(userId))
                 .thenReturn(Optional.of(cart));
         when(productRepository.findById(productId))
@@ -91,25 +79,13 @@ public class CartServiceTest {
         // given
         Long cartProductId = 100L;
 
-        User user = User.builder()
-                .username("sseioul@naver.com")
-                .password("1234")
-                .name("김기윤")
-                .nickname("key")
-                .role(UserRoleEnum.USER)
-                .build();
+        User user = user();
 
         Cart cart = Cart.builder()
                 .user(user)
                 .build();
 
-        Product product = Product.builder()
-                .productName("당근")
-                .productInfo("신선한 당근")
-                .productPrice(5000)
-                .leftProduct(100)
-                .productEnum(ProductEnum.SELLING)
-                .build();
+        Product product = product();
 
         CartProduct cartProduct = CartProduct.builder()
                 .product(product)
@@ -119,7 +95,7 @@ public class CartServiceTest {
 
         UpdateCartDto requestDto = new UpdateCartDto(cartProductId, 10);
 
-        CartService cartService = new CartService(cartRepository, productRepository, cartProductRepository);
+        CartService cartService = cartService();
         when(cartProductRepository.findById(cartProductId))
                 .thenReturn(Optional.of(cartProduct));
 
@@ -128,5 +104,34 @@ public class CartServiceTest {
 
         // then
         assertEquals(10, saveCartProduct.getProductCount());
+    }
+
+    private User user() {
+        return User.builder()
+                .userId(1L)
+                .username("sseioul@naver.com")
+                .password("1234")
+                .name("김기윤")
+                .nickname("key")
+                .role(UserRoleEnum.USER)
+                .build();
+    }
+
+    private Product product() {
+        return Product.builder()
+                .productName("당근")
+                .productInfo("신선한 당근")
+                .productPrice(5000)
+                .leftProduct(100)
+                .productEnum(ProductEnum.SELLING)
+                .build();
+    }
+
+    private CartService cartService() {
+        return new CartService(
+                cartRepository,
+                productRepository,
+                cartProductRepository
+        );
     }
 }
