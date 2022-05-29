@@ -21,49 +21,43 @@ public class UserTest {
     @Autowired
     EntityManager em;
 
-    private String username;
-    private String password;
-    private String passwordCheck;
-    private String name;
-    private String nickname;
-
-    @BeforeEach
-    public void setUp() {
-        username = "username@username.com";
-        password = "password";
-        passwordCheck = "password";
-        name = "name";
-        nickname = "nickname";
-    }
-
     @Test
     @DisplayName("정상 케이스")
     public void joinUser() {
 
         // given
-        JoinRequestDto requestDto = new JoinRequestDto(
-                username,
-                password,
-                passwordCheck,
-                name,
-                nickname
-        );
+        JoinRequestDto requestDto = joinRequestDto();
 
         //when
-        User user = User.builder()
-                .username(requestDto.getUsername())
-                .password(requestDto.getPassword())
-                .name(requestDto.getName())
-                .nickname(requestDto.getNickname())
-                .role(UserRoleEnum.USER)
-                .build();
+        User user = user();
 
         //then
-        assertEquals(username, user.getUsername());
-        assertEquals(password, user.getPassword());
-        assertEquals(name, user.getName());
-        assertEquals(nickname, user.getNickname());
+        assertEquals(requestDto.getUsername(), user.getUsername());
+        assertEquals(requestDto.getPassword(), user.getPassword());
+        assertEquals(requestDto.getName(), user.getName());
+        assertEquals(requestDto.getNickname(), user.getNickname());
         assertEquals(UserRoleEnum.USER, user.getRole());
+    }
+
+    private User user() {
+        return User.builder()
+                .userId(1L)
+                .username("sseioul@naver.com")
+                .password("1234")
+                .name("김기윤")
+                .nickname("key")
+                .role(UserRoleEnum.USER)
+                .build();
+    }
+
+    private JoinRequestDto joinRequestDto() {
+        return new JoinRequestDto(
+                "sseioul@naver.com",
+                "1234",
+                "1234",
+                "김기윤",
+                "key"
+        );
     }
 
 }

@@ -18,50 +18,40 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProductTest {
 
-    @Autowired
-    EntityManager em;
-
-    private String productName;
-    private String productInfo;
-    private int productPrice;
-    private int leftProduct;
-    private ProductEnum productEnum;
-
-    @BeforeEach
-    public void setUp() {
-        productName = "당근";
-        productInfo = "신선한 당근";
-        productPrice = 5000;
-        leftProduct = 100;
-        productEnum = ProductEnum.SELLING;
-    }
-
     @Test
     @DisplayName("정상 케이스")
-    public void createProduct() {
+    public void createProductTest() {
 
         // given
-        CreateProduct requestDto = new CreateProduct(
-                productName,
-                productInfo,
-                productPrice,
-                leftProduct
-        );
+        CreateProduct requestDto = createProduct();
 
         //when
-        Product product = Product.builder()
-                .productName(requestDto.getProductName())
-                .productInfo(requestDto.getProductInfo())
-                .productPrice(requestDto.getProductPrice())
-                .leftProduct(requestDto.getLeftProduct())
-                .productEnum(productEnum)
-                .build();
+        Product product = product();
 
         //then
-        assertEquals(productName, product.getProductName());
-        assertEquals(productInfo, product.getProductInfo());
-        assertEquals(productPrice, product.getProductPrice());
-        assertEquals(leftProduct, product.getLeftProduct());
-        assertEquals(productEnum, product.getProductEnum());
+        assertEquals(requestDto.getProductName(), product.getProductName());
+        assertEquals(requestDto.getProductInfo(), product.getProductInfo());
+        assertEquals(requestDto.getProductPrice(), product.getProductPrice());
+        assertEquals(requestDto.getLeftProduct(), product.getLeftProduct());
+        assertEquals(ProductEnum.SELLING, product.getProductEnum());
+    }
+
+    private Product product() {
+        return Product.builder()
+                .productName("당근")
+                .productInfo("신선한 당근")
+                .productPrice(5000)
+                .leftProduct(100)
+                .productEnum(ProductEnum.SELLING)
+                .build();
+    }
+
+    private CreateProduct createProduct() {
+        return new CreateProduct(
+                "당근",
+                "신선한 당근",
+                5000,
+                100
+        );
     }
 }

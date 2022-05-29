@@ -15,55 +15,34 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CartTest {
 
-    @Autowired
-    EntityManager em;
-
-    private String username;
-    private String password;
-    private String passwordCheck;
-    private String name;
-    private String nickname;
-
-    @BeforeEach
-    public void setUp() {
-        username = "username@username.com";
-        password = "password";
-        passwordCheck = "password";
-        name = "name";
-        nickname = "nickname";
-    }
-
     @Test
     @DisplayName("정상 케이스")
     public void createCart() {
 
         // given
-        UserRequestDto.JoinRequestDto requestDto = new UserRequestDto.JoinRequestDto(
-                username,
-                password,
-                passwordCheck,
-                name,
-                nickname
-        );
+        User user = user();
 
         //when
-        User user = User.builder()
-                .username(requestDto.getUsername())
-                .password(requestDto.getPassword())
-                .name(requestDto.getName())
-                .nickname(requestDto.getNickname())
-                .role(UserRoleEnum.USER)
-                .build();
-
         Cart cart = Cart.builder()
                 .user(user)
                 .build();
 
         //then
-        assertEquals(username, cart.getUser().getUsername());
-        assertEquals(password, cart.getUser().getPassword());
-        assertEquals(name, cart.getUser().getName());
-        assertEquals(nickname, cart.getUser().getNickname());
+        assertEquals(user.getUsername(), cart.getUser().getUsername());
+        assertEquals(user.getPassword(), cart.getUser().getPassword());
+        assertEquals(user.getName(), cart.getUser().getName());
+        assertEquals(user.getNickname(), cart.getUser().getNickname());
         assertEquals(UserRoleEnum.USER, cart.getUser().getRole());
+    }
+
+    private User user() {
+        return User.builder()
+                .userId(1L)
+                .username("sseioul@naver.com")
+                .password("1234")
+                .name("김기윤")
+                .nickname("key")
+                .role(UserRoleEnum.USER)
+                .build();
     }
 }
