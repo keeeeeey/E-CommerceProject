@@ -35,8 +35,9 @@ public class User extends Timestamped {
     private UserRoleEnum role;
 
     @Builder
-    public User(final String username, final String password, final String name,
-                final String nickname, final UserRoleEnum role) {
+    public User(final Long userId, final String username, final String password,
+                final String name, final String nickname, final UserRoleEnum role) {
+        this.id = userId;
         this.username = username;
         this.password = password;
         this.name = name;
