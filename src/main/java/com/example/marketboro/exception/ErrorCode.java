@@ -22,7 +22,8 @@ public enum ErrorCode {
     NO_EXISTENCECART_ERROR(400, "C001", "해당 상품이 장바구니에 존재하지 않습니다."),
     ALREADY_CANCELORDER_ERROR(400, "O001", "이미 취소된 주문입니다."),
     ALREADY_DELIVERED_ERROR(400, "O002", "이미 배송이 완료된 상품입니다. 주문을 취소할 수 없습니다."),
-    NO_ORDERED_ERROR(400, "O003", "주문하신 상품이 아닙니다.");
+    NO_ORDERED_ERROR(400, "O003", "주문하신 상품이 아닙니다."),
+    TEST(000, "T000", "빌드 자동화 테스트");
 
     private int statusCode;
     private final String errorCode;
