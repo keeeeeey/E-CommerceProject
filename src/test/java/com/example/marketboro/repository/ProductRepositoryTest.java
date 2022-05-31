@@ -57,7 +57,6 @@ public class ProductRepositoryTest {
 
     private Product product() {
         return Product.builder()
-                .productId(1L)
                 .productName("당근")
                 .productInfo("신선한 당근")
                 .productPrice(5000)
@@ -68,7 +67,6 @@ public class ProductRepositoryTest {
 
     private Product product2() {
         return Product.builder()
-                .productId(2L)
                 .productName("배추")
                 .productInfo("신선한 배추")
                 .productPrice(10000)

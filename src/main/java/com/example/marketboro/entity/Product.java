@@ -33,9 +33,8 @@ public class Product extends Timestamped {
     private ProductEnum productEnum;
 
     @Builder
-    public Product(final Long productId, final String productName, final String productInfo,
+    public Product(final String productName, final String productInfo,
                    final int productPrice, final int leftProduct, final ProductEnum productEnum) {
-        this.id = productId;
         this.productName = productName;
         this.productInfo = productInfo;
         this.productPrice = productPrice;

@@ -55,7 +55,6 @@ public class OrderProductTest {
 
     private User user() {
         return User.builder()
-                .userId(1L)
                 .username("sseioul@naver.com")
                 .password("1234")
                 .name("김기윤")
