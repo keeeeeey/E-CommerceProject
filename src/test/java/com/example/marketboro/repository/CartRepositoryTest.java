@@ -47,11 +47,11 @@ public class CartRepositoryTest {
         Cart cart = Cart.builder()
                 .user(user)
                 .build();
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
         cartRepository.save(cart);
 
         // when
-        Optional<Cart> findCart = cartRepository.findByUserId(user.getId());
+        Optional<Cart> findCart = cartRepository.findByUserId(savedUser.getId());
 
         // then
         assertEquals(cart.getUser().getUsername(), findCart.get().getUser().getUsername());
@@ -59,7 +59,6 @@ public class CartRepositoryTest {
 
     private User user() {
         return User.builder()
-                .userId(1L)
                 .username("sseioul@naver.com")
                 .password("1234")
                 .name("김기윤")

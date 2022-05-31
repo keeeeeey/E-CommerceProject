@@ -73,14 +73,14 @@ public class CartProductRepositoryTest {
                 .build();
         userRepository.save(user);
         productRepository.save(product);
-        cartRepository.save(cart);
+        Cart savedCart = cartRepository.save(cart);
         cartProductRepository.save(cartProduct);
 
         Pageable pageable = PageRequest.of(0, 10);
 
         // when
         List<CartProductResponseDto> responseDtoList = cartProductRepository
-                .findCartProductByCartId(cart.getId(), pageable);
+                .findCartProductByCartId(savedCart.getId(), pageable);
 
         // then
         assertEquals(1, responseDtoList.size());
@@ -91,7 +91,6 @@ public class CartProductRepositoryTest {
 
     private User user() {
         return User.builder()
-                .userId(1L)
                 .username("sseioul@naver.com")
                 .password("1234")
                 .name("김기윤")
