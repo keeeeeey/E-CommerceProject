@@ -18,9 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class UserTest {
 
-    @Autowired
-    EntityManager em;
-
     @Test
     @DisplayName("정상 케이스")
     public void joinUser() {
