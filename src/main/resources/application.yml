@@ -44,6 +44,7 @@ spring:
     username: ${rds.username}
     # DB password
     password: ${rds.password}
+
   jpa:
     hibernate:
       ddl-auto: none

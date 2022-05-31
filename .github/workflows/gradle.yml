@@ -47,36 +47,17 @@ jobs:
           spring.datasource.password: ${{ secrets.RDS_PASSWORD }}
           jwt.secret: ${{ secrets.JWT_SECRET }}
 
-      - name: Build with Gradle
-        uses: gradle/gradle-build-action@937999e9cc2425eddc7fd62d1053baf041147db7
-        with:
-          arguments: build
-
-      - name: Get current time
-        uses: 1466587594/get-current-time@v2
-        id: current-time
-        with:
-          format: YYYY-MM-DDTHH-mm-ss # (1)
-          utcOffset: "+09:00"
-
-      - name: Show Current Time
-        run: echo "CurrentTime=${{steps.current-time.outputs.formattedTime}}"
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
         shell: bash
 
-      - name: Make Directory
-        run: mkdir deploy
-        # Jar 파일 복사
-      - name: Copy Jar
-        run: cp ./build/libs/*.jar ./deploy/
-
-      - name: Copy script
-        run: cp ./scripts/*.sh ./deploy/
-
-      - name: Copy appspec.yml
-        run: cp appspec.yml ./deploy/
+      - name: Build with Gradle
+        run: ./gradlew build
+        shell: bash
 
       - name: Make zip file
-        run: zip -r -qq -j ./$GITHUB_SHA.zip ./deploy/
+        run: zip -r ./$GITHUB_SHA.zip .
+        shell: bash
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
