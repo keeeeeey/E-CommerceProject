@@ -71,11 +71,11 @@ public class OrderProductRepositoryTest {
                 .build();
         userRepository.save(user);
         productRepository.save(product);
-        orderRepository.save(order);
+        Order savedOrder = orderRepository.save(order);
         orderProductRepository.save(orderProduct);
 
         // when
-        List<OrderProductResponseDto> responseDtoList = orderProductRepository.findOrderProductByOrderId(order.getId());
+        List<OrderProductResponseDto> responseDtoList = orderProductRepository.findOrderProductByOrderId(savedOrder.getId());
 
         // then
         assertEquals(1, responseDtoList.size());
@@ -85,7 +85,6 @@ public class OrderProductRepositoryTest {
 
     private User user() {
         return User.builder()
-                .userId(1L)
                 .username("sseioul@naver.com")
                 .password("1234")
                 .name("김기윤")

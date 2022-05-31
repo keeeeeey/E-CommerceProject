@@ -50,11 +50,11 @@ public class OrderRepositoryTest {
         Order order = Order.builder()
                 .user(user)
                 .build();
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
         orderRepository.save(order);
 
         // when
-        List<Order> findOrderList = orderRepository.findAllByUserId(user.getId());
+        List<Order> findOrderList = orderRepository.findAllByUserId(savedUser.getId());
 
         // then
         assertEquals(1, findOrderList.size());
@@ -62,7 +62,6 @@ public class OrderRepositoryTest {
 
     private User user() {
         return User.builder()
-                .userId(1L)
                 .username("sseioul@naver.com")
                 .password("1234")
                 .name("김기윤")

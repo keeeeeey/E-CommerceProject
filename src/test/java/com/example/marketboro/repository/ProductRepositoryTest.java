@@ -38,24 +38,6 @@ public class ProductRepositoryTest {
     }
 
     @Test
-    @DisplayName("findById")
-    public void findByIdTest() {
-        // given
-        Product product = product();
-        productRepository.save(product);
-
-        // when
-        Optional<Product> findProduct = productRepository.findById(product.getId());
-
-        // then
-        assertEquals(product.getProductName(), findProduct.get().getProductName());
-        assertEquals(product.getProductInfo(), findProduct.get().getProductInfo());
-        assertEquals(product.getProductPrice(), findProduct.get().getProductPrice());
-        assertEquals(product.getLeftProduct(), findProduct.get().getLeftProduct());
-        assertEquals(product.getProductEnum(), findProduct.get().getProductEnum());
-    }
-
-    @Test
     @DisplayName("findAllByOrderByModifiedAtDesc")
     public void findAllByOrderByModifiedAtDescTest() {
         // given

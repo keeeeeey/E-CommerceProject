@@ -34,23 +34,6 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("findById")
-    public void findByIdTest() {
-        // given
-        User user = user();
-        userRepository.save(user);
-
-        // when
-        Optional<User> findUser = userRepository.findById(user.getId());
-
-        // then
-        assertEquals(user.getUsername(), findUser.get().getUsername());
-        assertEquals(user.getName(), findUser.get().getName());
-        assertEquals(user.getNickname(), findUser.get().getNickname());
-        assertEquals(user.getRole(), findUser.get().getRole());
-    }
-
-    @Test
     @DisplayName("findByUsername")
     public void findByUsernameTest() {
         // given
