@@ -40,39 +40,39 @@ public class CartControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(cartController).build();
     }
 
-    @Test
-    @DisplayName("장바구니 담기")
-    public void addCart() throws Exception {
-        // given
-        AddCartDto requestDto = new AddCartDto(100L, 5);
-
-        CartProductResponseDto responseDto = CartProductResponseDto.builder()
-                .cartProductId(1L)
-                .productId(100L)
-                .productName("당근")
-                .productInfo("신선한 당근")
-                .productPrice(5000)
-                .productCount(5)
-                .build();
-
-        when(cartService.addCart(any(Long.class), any(AddCartDto.class))).thenReturn(responseDto);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        // when
-        ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/cart")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(requestDto))
-        );
-
-        // then
-        resultActions
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("result").value("success"))
-                .andExpect(jsonPath("msg").value("장바구니 담기"))
-                .andDo(print());
-    }
+//    @Test
+//    @DisplayName("장바구니 담기")
+//    public void addCart() throws Exception {
+//        // given
+//        AddCartDto requestDto = new AddCartDto(100L, 5);
+//
+//        CartProductResponseDto responseDto = CartProductResponseDto.builder()
+//                .cartProductId(1L)
+//                .productId(100L)
+//                .productName("당근")
+//                .productInfo("신선한 당근")
+//                .productPrice(5000)
+//                .productCount(5)
+//                .build();
+//
+//        when(cartService.addCart(any(Long.class), any(AddCartDto.class))).thenReturn(responseDto);
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//
+//        // when
+//        ResultActions resultActions = mockMvc.perform(
+//                MockMvcRequestBuilders.post("/api/cart")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(requestDto))
+//        );
+//
+//        // then
+//        resultActions
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("result").value("success"))
+//                .andExpect(jsonPath("msg").value("장바구니 담기"))
+//                .andDo(print());
+//    }
 
     @Test
     @DisplayName("장바구니 수정")

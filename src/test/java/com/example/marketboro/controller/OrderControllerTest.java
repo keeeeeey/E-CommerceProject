@@ -47,45 +47,45 @@ public class OrderControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(orderController).build();
     }
 
-    @Test
-    @DisplayName("상품 주문 접수")
-    public void createOrder() throws Exception {
-        // given
-        List<OrderDto> orderList = new ArrayList<>();
-        OrderDto requestDto = new OrderDto(100L, 100L, 10);
-        orderList.add(requestDto);
-        CreateOrderDto requestDtoList = new CreateOrderDto(orderList);
-
-        List<OrderProductResponseDto> responseDtoList = new ArrayList<>();
-        OrderProductResponseDto responseDto = OrderProductResponseDto.builder()
-                .orderProductId(1L)
-                .productId(100L)
-                .productName("당근")
-                .productInfo("신선한 당근")
-                .productPrice(5000)
-                .productCount(5)
-                .orderStatus(OrderStatus.주문접수)
-                .build();
-        responseDtoList.add(responseDto);
-
-        when(orderService.createOrder(any(Long.class), any(CreateOrderDto.class), any(MockHttpServletRequest.class))).thenReturn(responseDtoList);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        // when
-        ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/order")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(requestDtoList))
-        );
-
-        // then
-        resultActions
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("result").value("success"))
-                .andExpect(jsonPath("msg").value("상품 주문 접수"))
-                .andDo(print());
-    }
+//    @Test
+//    @DisplayName("상품 주문 접수")
+//    public void createOrder() throws Exception {
+//        // given
+//        List<OrderDto> orderList = new ArrayList<>();
+//        OrderDto requestDto = new OrderDto(100L, 100L, 10);
+//        orderList.add(requestDto);
+//        CreateOrderDto requestDtoList = new CreateOrderDto(orderList);
+//
+//        List<OrderProductResponseDto> responseDtoList = new ArrayList<>();
+//        OrderProductResponseDto responseDto = OrderProductResponseDto.builder()
+//                .orderProductId(1L)
+//                .productId(100L)
+//                .productName("당근")
+//                .productInfo("신선한 당근")
+//                .productPrice(5000)
+//                .productCount(5)
+//                .orderStatus(OrderStatus.주문접수)
+//                .build();
+//        responseDtoList.add(responseDto);
+//
+//        when(orderService.createOrder(any(Long.class), any(CreateOrderDto.class), any(MockHttpServletRequest.class))).thenReturn(responseDtoList);
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//
+//        // when
+//        ResultActions resultActions = mockMvc.perform(
+//                MockMvcRequestBuilders.post("/api/order")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(requestDtoList))
+//        );
+//
+//        // then
+//        resultActions
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("result").value("success"))
+//                .andExpect(jsonPath("msg").value("상품 주문 접수"))
+//                .andDo(print());
+//    }
 
     @Test
     @DisplayName("주문취소")
