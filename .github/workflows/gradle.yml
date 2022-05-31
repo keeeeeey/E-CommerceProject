@@ -12,9 +12,11 @@ name: Deploy to Amazon EC2
 # branch 단위 외에도, tag나 cron 식 등을 사용할 수 있음 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - main
   pull_request:
-    branches: [ master ]
+    branches:
+      - main
 
 env:
   AWS_REGION: ap-northeast-2
