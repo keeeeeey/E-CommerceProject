@@ -1,13 +1,8 @@
 package com.example.marketboro.controller;
 
-import com.example.marketboro.dto.request.CartRequestDto;
 import com.example.marketboro.dto.request.CartRequestDto.AddCartDto;
 import com.example.marketboro.dto.request.CartRequestDto.UpdateCartDto;
-import com.example.marketboro.dto.request.ProductRequestDto;
 import com.example.marketboro.dto.response.CartProductResponseDto;
-import com.example.marketboro.entity.User;
-import com.example.marketboro.entity.UserRoleEnum;
-import com.example.marketboro.security.UserDetailsImpl;
 import com.example.marketboro.service.CartService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,16 +13,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;

@@ -1,10 +1,7 @@
 package com.example.marketboro.controller;
 
-import com.example.marketboro.dto.Success;
-import com.example.marketboro.dto.request.UserRequestDto;
 import com.example.marketboro.dto.request.UserRequestDto.JoinRequestDto;
 import com.example.marketboro.dto.request.UserRequestDto.LoginRequestDto;
-import com.example.marketboro.dto.response.UserResponseDto;
 import com.example.marketboro.dto.response.UserResponseDto.LoginResponseDto;
 import com.example.marketboro.entity.User;
 import com.example.marketboro.entity.UserRoleEnum;
@@ -12,7 +9,6 @@ import com.example.marketboro.service.KakaoService;
 import com.example.marketboro.service.RedisService;
 import com.example.marketboro.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

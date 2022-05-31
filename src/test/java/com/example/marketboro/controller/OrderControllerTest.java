@@ -1,13 +1,9 @@
 package com.example.marketboro.controller;
 
-import com.example.marketboro.dto.request.CartRequestDto;
-import com.example.marketboro.dto.request.CommonDto;
 import com.example.marketboro.dto.request.CommonDto.IdDto;
 import com.example.marketboro.dto.request.CommonDto.OrderDto;
-import com.example.marketboro.dto.request.OrderRequestDto;
 import com.example.marketboro.dto.request.OrderRequestDto.CancelOrderDto;
 import com.example.marketboro.dto.request.OrderRequestDto.CreateOrderDto;
-import com.example.marketboro.dto.response.CartProductResponseDto;
 import com.example.marketboro.dto.response.OrderProductResponseDto;
 import com.example.marketboro.entity.OrderStatus;
 import com.example.marketboro.service.OrderService;
@@ -45,8 +41,6 @@ public class OrderControllerTest {
     OrderService orderService;
 
     MockMvc mockMvc;
-
-    MockHttpServletRequest request = new MockHttpServletRequest();
 
     @BeforeEach
     public void init() {
