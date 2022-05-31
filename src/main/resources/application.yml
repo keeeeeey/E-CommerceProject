@@ -31,10 +31,6 @@ server:
   port: 8081
 
 spring:
-  config:
-    activate:
-      on-profile: real1
-
   datasource:
     #mysql setting
     driver-class-name: com.mysql.cj.jdbc.Driver
