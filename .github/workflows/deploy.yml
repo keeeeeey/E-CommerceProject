@@ -69,11 +69,8 @@ jobs:
         with:
           arguments: clean build -x test
 
-      - name: Make Directory for deliver
-        run: mkdir deploy
-
       - name: Copy Jar
-        run: cp ./build/libs/*.jar ./deploy/
+        run: cp ./build/libs/*.jar ./deploy
 
       - name: Make zip file
         run: zip -r ./$GITHUB_SHA.zip .
