@@ -37,10 +37,20 @@ jobs:
         with:
           java-version: 1.8
 
-      - name: Set yaml file
+      - name: Set Yaml-1
         uses: microsoft/variable-substitution@v1
         with:
-          files: ${{ env.RESOURCE_PATH }}
+          files: ./src/main/resources/application-real1.yml
+        env:
+          spring.datasource.url: ${{ secrets.RDS_HOST }}
+          spring.datasource.username: ${{ secrets.RDS_USERNAME }}
+          spring.datasource.password: ${{ secrets.RDS_PASSWORD }}
+          jwt.secret: ${{ secrets.JWT_SECRET }}
+
+      - name: Set Yaml-2
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ./src/main/resources/application-real2.yml
         env:
           spring.datasource.url: ${{ secrets.RDS_HOST }}
           spring.datasource.username: ${{ secrets.RDS_USERNAME }}
@@ -60,9 +70,31 @@ jobs:
         with:
           arguments: clean build -x test
 
-      - name: Make zip file
-        run: zip -r ./$GITHUB_SHA.zip .
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
+        with:
+          format: YYYY-MM-DDTHH-mm-ss # (1)
+          utcOffset: "+09:00"
+
+      - name: Show Current Time
+        run: echo "CurrentTime=${{steps.current-time.outputs.formattedTime}}"
         shell: bash
+
+      - name: Make Directory
+        run: mkdir deploy
+        # Jar 파일 복사
+      - name: Copy Jar
+        run: cp ./build/libs/*.jar ./deploy/
+
+      - name: Copy script
+        run: cp ./scripts/*.sh ./deploy/
+
+      - name: Copy appspec.yml
+        run: cp appspec.yml ./deploy/
+
+      - name: Make zip file
+        run: zip -r -qq -j ./$GITHUB_SHA.zip ./deploy/
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1

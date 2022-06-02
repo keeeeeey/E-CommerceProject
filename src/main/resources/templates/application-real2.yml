@@ -1,4 +1,8 @@
 spring:
+  config:
+    activate:
+      on-profile: real2
+
   datasource:
     #mysql setting
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -34,4 +38,4 @@ logging.level:
   org.hibernate.SQL: debug
 
 server:
-  port: 8081
+  port: 8082
