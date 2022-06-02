@@ -69,8 +69,8 @@ jobs:
         with:
           arguments: clean build -x test
 
-      - name: Build with Gradle
-        run: ./gradlew build
+      - name: Make zip file
+        run: zip -r ./$GITHUB_SHA.zip .
         shell: bash
 
       - name: Configure AWS credentials
