@@ -91,6 +91,12 @@ jobs:
       - name: Copy appspec.yml
         run: cp appspec.yml ./deploy/
 
+      - name: Copy application-real1.yml
+        run: cp application-real1 ./deploy/
+
+      - name: Copy application-real2
+        run: cp application-real2 ./deploy/
+
       - name: Make zip file
         run: zip -r -qq -j ./$GITHUB_SHA.zip ./deploy/
 
