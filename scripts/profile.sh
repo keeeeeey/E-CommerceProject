@@ -1,18 +1,17 @@
 #!/usr/bin/env bash
 
-# profile.sh
-# 미사용 중인 profile을 잡는다.
-
 function find_idle_profile()
 {
     # curl 결과로 연결할 서비스 결정
     RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/profile)
 
+
+
     if [ ${RESPONSE_CODE} -ge 400 ] # 400 보다 크면 (즉, 40x/50x 에러 모두 포함)
     then
         CURRENT_PROFILE=real2
     else
-        CURRENT_PROFILE=$(curl -s http://localhost/profile)
+        CURRENT_PROFILE=real1
     fi
 
     # IDLE_PROFILE : nginx와 연결되지 않은 profile
