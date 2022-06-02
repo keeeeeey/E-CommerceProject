@@ -1,7 +1,4 @@
-# !/usr/bin/env bash
-
-# stop.sh
-# 서버 중단을 위한 스크립트
+#!/usr/bin/env bash
 
 ABSPATH=$(readlink -f $0)
 # ABSDIR : 현재 stop.sh 파일 위치의 경로

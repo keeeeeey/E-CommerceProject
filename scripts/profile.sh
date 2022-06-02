@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# profile.sh
-# 미사용 중인 profile을 잡는다.
-
 function find_idle_profile()
 {
     # curl 결과로 연결할 서비스 결정
@@ -12,7 +9,7 @@ function find_idle_profile()
     then
         CURRENT_PROFILE=real2
     else
-        CURRENT_PROFILE=$(curl -s http://localhost/profile)
+        CURRENT_PROFILE=real1
     fi
 
     # IDLE_PROFILE : nginx와 연결되지 않은 profile
