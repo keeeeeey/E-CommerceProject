@@ -4,7 +4,8 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/app/deploy
+    destination: /home/ec2-user/dplus
+    overwrite: yes
 
 permissions:
   - object: /
