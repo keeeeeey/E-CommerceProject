@@ -36,7 +36,7 @@ jobs:
         with:
           java-version: 1.8
 
-      - name: Set Yaml-1
+      - name: Set Yml-1
         uses: microsoft/variable-substitution@v1
         with:
           files: ./src/main/resources/application-real1.yml
@@ -46,7 +46,7 @@ jobs:
           spring.datasource.password: ${{ secrets.RDS_PASSWORD }}
           jwt.secret: ${{ secrets.JWT_SECRET }}
 
-      - name: Set Yaml-2
+      - name: Set Yml-2
         uses: microsoft/variable-substitution@v1
         with:
           files: ./src/main/resources/application-real2.yml
