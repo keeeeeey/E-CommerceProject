@@ -14,12 +14,10 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisConfig {
 
 //    @Value("${spring.redis.host}")
-//    private String redisHost;
-
     private String redisHost = "localhost";
 
-    @Value("${spring.redis.port}")
-    private int redisPort;
+//    @Value("${spring.redis.port}")
+    private int redisPort = 6379;
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
