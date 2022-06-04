@@ -19,15 +19,13 @@ public class OrderProductResponseDto {
     private OrderStatus orderStatus;
 
     @Builder
-    public OrderProductResponseDto(final Long orderProductId, final Long productId, final String productName,
-                                   final String productInfo, final int productPrice, final int productCount,
-                                   final OrderStatus orderStatus) {
-        this.orderProductId = orderProductId;
-        this.productId = productId;
-        this.productName = productName;
-        this.productInfo = productInfo;
-        this.productPrice = productPrice;
-        this.productCount = productCount;
-        this.orderStatus = orderStatus;
+    public OrderProductResponseDto(OrderProduct orderProduct) {
+        this.orderProductId = orderProduct.getId();
+        this.productId = orderProduct.getProduct().getId();
+        this.productName = orderProduct.getProduct().getProductName();
+        this.productInfo = orderProduct.getProduct().getProductInfo();
+        this.productPrice = orderProduct.getProduct().getProductPrice();
+        this.productCount = orderProduct.getProductCount();
+        this.orderStatus = orderProduct.getOrderStatus();
     }
 }

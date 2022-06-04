@@ -3,6 +3,7 @@ package com.example.marketboro.controller;
 import com.example.marketboro.dto.request.CartRequestDto.AddCartDto;
 import com.example.marketboro.dto.request.CartRequestDto.UpdateCartDto;
 import com.example.marketboro.dto.response.CartProductResponseDto;
+import com.example.marketboro.entity.*;
 import com.example.marketboro.service.CartService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -80,13 +81,18 @@ public class CartControllerTest {
         // given
         UpdateCartDto requestDto = new UpdateCartDto(100L, 10);
 
+        User user = user();
+
+        Product product = product();
+
+        Cart cart = Cart.builder()
+                .user(user)
+                .build();
+
+        CartProduct cartProduct = cartProduct(cart, product);
+
         CartProductResponseDto responseDto = CartProductResponseDto.builder()
-                .cartProductId(1L)
-                .productId(100L)
-                .productName("당근")
-                .productInfo("신선한 당근")
-                .productPrice(5000)
-                .productCount(10)
+                .cartProduct(cartProduct)
                 .build();
 
         when(cartService.updateCart(any(UpdateCartDto.class))).thenReturn(responseDto);
@@ -106,5 +112,33 @@ public class CartControllerTest {
                 .andExpect(jsonPath("result").value("success"))
                 .andExpect(jsonPath("msg").value("장바구니 수정"))
                 .andDo(print());
+    }
+
+    private User user() {
+        return User.builder()
+                .username("sseioul@naver.com")
+                .password("1234")
+                .name("김기윤")
+                .nickname("key")
+                .role(UserRoleEnum.USER)
+                .build();
+    }
+
+    private Product product() {
+        return Product.builder()
+                .productName("당근")
+                .productInfo("신선한 당근")
+                .productPrice(5000)
+                .leftProduct(100)
+                .productEnum(ProductEnum.SELLING)
+                .build();
+    }
+
+    private CartProduct cartProduct(Cart cart, Product product) {
+        return CartProduct.builder()
+                .cart(cart)
+                .product(product)
+                .productCount(10)
+                .build();
     }
 }

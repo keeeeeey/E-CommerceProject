@@ -63,13 +63,7 @@ public class OrderService {
         orderProduct.changeOrderStatus(OrderStatus.배송완료);
         log.info(orderProduct.getId() + "번 주문 배송 완료");
         return OrderProductResponseDto.builder()
-                .orderProductId(orderProduct.getId())
-                .productId(orderProduct.getProduct().getId())
-                .productName(orderProduct.getProduct().getProductName())
-                .productInfo(orderProduct.getProduct().getProductInfo())
-                .productPrice(orderProduct.getProduct().getProductPrice())
-                .productCount(orderProduct.getProductCount())
-                .orderStatus(orderProduct.getOrderStatus())
+                .orderProduct(orderProduct)
                 .build();
     }
 
@@ -109,13 +103,7 @@ public class OrderService {
             cartProductRepository.deleteById(orderDto.getCartProductId());
 
             OrderProductResponseDto responseDto = OrderProductResponseDto.builder()
-                    .orderProductId(saveOrderProduct.getId())
-                    .productId(product.getId())
-                    .productName(product.getProductName())
-                    .productInfo(product.getProductInfo())
-                    .productPrice(product.getProductPrice())
-                    .productCount(saveOrderProduct.getProductCount())
-                    .orderStatus(saveOrderProduct.getOrderStatus())
+                    .orderProduct(saveOrderProduct)
                     .build();
 
             responseDtoList.add(responseDto);
@@ -140,13 +128,7 @@ public class OrderService {
             orderProduct.getProduct().plusLeftProduct(orderProduct.getProductCount());
 
             OrderProductResponseDto responseDto = OrderProductResponseDto.builder()
-                    .orderProductId(orderProduct.getId())
-                    .productId(orderProduct.getProduct().getId())
-                    .productName(orderProduct.getProduct().getProductName())
-                    .productInfo(orderProduct.getProduct().getProductInfo())
-                    .productPrice(orderProduct.getProduct().getProductPrice())
-                    .productCount(orderProduct.getProductCount())
-                    .orderStatus(orderProduct.getOrderStatus())
+                    .orderProduct(orderProduct)
                     .build();
 
             responseDtoList.add(responseDto);

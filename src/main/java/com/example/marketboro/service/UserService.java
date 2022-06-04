@@ -1,5 +1,6 @@
 package com.example.marketboro.service;
 
+import com.example.marketboro.Validator;
 import com.example.marketboro.dto.request.UserRequestDto.JoinRequestDto;
 import com.example.marketboro.dto.request.UserRequestDto.LoginRequestDto;
 import com.example.marketboro.dto.response.UserResponseDto.LoginResponseDto;
@@ -30,34 +31,23 @@ public class UserService {
     //회원가입 확인
     @Transactional
     public User join(JoinRequestDto requestDto) {
-        // 회원 ID 중복 확인
         String username = requestDto.getUsername();
         Optional<User> findUser = userRepository.findByUsername(username);
-
-        if (findUser.isPresent()) {
-            throw new ErrorCustomException(ErrorCode.ALREADY_USERNAME_ERROR);
-        }
 
         String password = requestDto.getPassword();
         String passwordCheck = requestDto.getPasswordCheck();
 
-        if (!password.equals(passwordCheck)) {
-            throw new ErrorCustomException(ErrorCode.NO_MATCH_PASSWORD_ERROR);
-        }
-
         String nickname = requestDto.getNickname();
         Optional<User> findUserByNickname = userRepository.findByNickname(nickname);
 
-        if (findUserByNickname.isPresent()) {
-            throw new ErrorCustomException(ErrorCode.ALREADY_NICKNAME_ERROR);
-        }
+        Validator.joinValidation(findUser, password, passwordCheck, findUserByNickname);
 
         // 패스워드 암호화
-        String bcryptpassword = passwordEncoder.encode(password);
+        String encodedPassword = passwordEncoder.encode(password);
 
         User user = User.builder()
                 .username(username)
-                .password(bcryptpassword)
+                .password(encodedPassword)
                 .name(requestDto.getName())
                 .nickname(nickname)
                 .role(UserRoleEnum.USER)
@@ -96,4 +86,5 @@ public class UserService {
                 .refreshToken(refreshToken)
                 .build();
     }
+
 }

@@ -5,7 +5,7 @@ import com.example.marketboro.dto.request.CommonDto.OrderDto;
 import com.example.marketboro.dto.request.OrderRequestDto.CancelOrderDto;
 import com.example.marketboro.dto.request.OrderRequestDto.CreateOrderDto;
 import com.example.marketboro.dto.response.OrderProductResponseDto;
-import com.example.marketboro.entity.OrderStatus;
+import com.example.marketboro.entity.*;
 import com.example.marketboro.service.OrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -91,6 +91,16 @@ public class OrderControllerTest {
     @DisplayName("주문취소")
     public void cancelOrderTest() throws Exception {
         // given
+        User user = user();
+
+        Product product = product();
+
+        Order order = Order.builder()
+                .user(user)
+                .build();
+
+        OrderProduct orderProduct = orderProduct(order, product, OrderStatus.주문취소);
+
         List<IdDto> orderList = new ArrayList<>();
         IdDto requestDto = new IdDto(1L);
         orderList.add(requestDto);
@@ -98,13 +108,7 @@ public class OrderControllerTest {
 
         List<OrderProductResponseDto> responseDtoList = new ArrayList<>();
         OrderProductResponseDto responseDto = OrderProductResponseDto.builder()
-                .orderProductId(1L)
-                .productId(100L)
-                .productName("당근")
-                .productInfo("신선한 당근")
-                .productPrice(5000)
-                .productCount(5)
-                .orderStatus(OrderStatus.주문취소)
+                .orderProduct(orderProduct)
                 .build();
         responseDtoList.add(responseDto);
 
@@ -131,21 +135,23 @@ public class OrderControllerTest {
     @DisplayName("상품 배송 완료")
     public void finishDelivery() throws Exception {
         // given
+        User user = user();
+
+        Product product = product();
+
+        Order order = Order.builder()
+                .user(user)
+                .build();
+
+        OrderProduct orderProduct = orderProduct(order, product, OrderStatus.배송완료);
+
         Long orderProductId = 1L;
 
         OrderProductResponseDto responseDto = OrderProductResponseDto.builder()
-                .orderProductId(1L)
-                .productId(100L)
-                .productName("당근")
-                .productInfo("신선한 당근")
-                .productPrice(5000)
-                .productCount(5)
-                .orderStatus(OrderStatus.배송완료)
+                .orderProduct(orderProduct)
                 .build();
 
         when(orderService.finishDelivery(any(Long.class))).thenReturn(responseDto);
-
-        ObjectMapper objectMapper = new ObjectMapper();
 
         // when
         ResultActions resultActions = mockMvc.perform(
@@ -158,5 +164,34 @@ public class OrderControllerTest {
                 .andExpect(jsonPath("result").value("success"))
                 .andExpect(jsonPath("msg").value("상품 배송 완료"))
                 .andDo(print());
+    }
+
+    private User user() {
+        return User.builder()
+                .username("sseioul@naver.com")
+                .password("1234")
+                .name("김기윤")
+                .nickname("key")
+                .role(UserRoleEnum.USER)
+                .build();
+    }
+
+    private Product product() {
+        return Product.builder()
+                .productName("당근")
+                .productInfo("신선한 당근")
+                .productPrice(5000)
+                .leftProduct(100)
+                .productEnum(ProductEnum.SELLING)
+                .build();
+    }
+
+    private OrderProduct orderProduct(Order order, Product product, OrderStatus orderStatus) {
+        return OrderProduct.builder()
+                .order(order)
+                .product(product)
+                .productCount(5)
+                .orderStatus(orderStatus)
+                .build();
     }
 }

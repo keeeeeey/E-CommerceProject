@@ -8,7 +8,7 @@ import com.example.marketboro.exception.ErrorCode;
 import com.example.marketboro.exception.ErrorCustomException;
 import com.example.marketboro.security.UserDetailsImpl;
 import com.example.marketboro.service.ProductService;
-import com.example.marketboro.validator.AuthenticationValidator;
+import com.example.marketboro.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,7 @@ public class ProductController {
     @PostMapping("/api/product")
     public ResponseEntity<Success> createProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                  @Valid @RequestBody CreateProduct requestDto) {
-        AuthenticationValidator.authenticationValidator(userDetails);
+        Validator.authenticationValidator(userDetails);
         return new ResponseEntity<>(new Success("상품 등록",
                 productService.createProduct(requestDto)), HttpStatus.OK);
     }
@@ -38,7 +38,7 @@ public class ProductController {
     public ResponseEntity<Success> updateProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                  @Valid @RequestBody UpdateProduct requestDto,
                                                  @PathVariable Long productId) {
-        AuthenticationValidator.authenticationValidator(userDetails);
+        Validator.authenticationValidator(userDetails);
         return new ResponseEntity<>(new Success("상품 정보 수정",
                 productService.updateProduct(requestDto, productId)), HttpStatus.OK);
     }
@@ -47,7 +47,7 @@ public class ProductController {
     @DeleteMapping("/api/product/{productId}")
     public ResponseEntity<Success> deleteProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                  @PathVariable Long productId) {
-        AuthenticationValidator.authenticationValidator(userDetails);
+        Validator.authenticationValidator(userDetails);
         productService.deleteProduct(productId);
         return new ResponseEntity<>(new Success("상품 삭제", ""), HttpStatus.OK);
     }

@@ -46,12 +46,7 @@ public class CartService {
                 .build();
         CartProduct saveCartProduct = cartProductRepository.save(cartProduct);
         return CartProductResponseDto.builder()
-                .cartProductId(saveCartProduct.getId())
-                .productId(product.getId())
-                .productName(product.getProductName())
-                .productInfo(product.getProductInfo())
-                .productPrice(product.getProductPrice())
-                .productCount(saveCartProduct.getProductCount())
+                .cartProduct(saveCartProduct)
                 .build();
     }
 
@@ -64,12 +59,7 @@ public class CartService {
 
         cartProduct.updateCartProduct(requestDto);
         return CartProductResponseDto.builder()
-                .cartProductId(cartProduct.getId())
-                .productId(cartProduct.getProduct().getId())
-                .productName(cartProduct.getProduct().getProductName())
-                .productInfo(cartProduct.getProduct().getProductInfo())
-                .productPrice(cartProduct.getProduct().getProductPrice())
-                .productCount(cartProduct.getProductCount())
+                .cartProduct(cartProduct)
                 .build();
     }
 
