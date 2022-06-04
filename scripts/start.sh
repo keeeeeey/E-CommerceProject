@@ -7,7 +7,7 @@ ABSPATH=$(readlink -f $0)
 ABSDIR=$(dirname $ABSPATH)
 source ${ABSDIR}/profile.sh
 
-REPOSITORY=/home/ec2-user/dplus
+REPOSITORY=/home/ec2-user/market
 PROJECT_NAME=code-0.0.1-SNAPSHOT
 
 echo "> 새 어플리케이션 배포"
